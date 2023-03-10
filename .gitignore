@@ -1,0 +1,16 @@
+/wikitude-sdk
+/plugins
+/app/libs
+/.idea
+.gradle
+/build
+java_pid18792.hprof
+!plugins/
+plugins/*
+!plugins/src/
+plugins/src/*
+!plugins/src/main/
+plugins/src/main/*
+!plugins/src/main/cpp/
+plugins/src/main/cpp/*
+!plugins/src/main/cpp/src

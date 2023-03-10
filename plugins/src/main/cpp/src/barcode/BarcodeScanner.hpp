@@ -1,0 +1,52 @@
+/******************************************************************************
+ * File: BarcodeScanner.hpp
+ * Copyright (c) 2021 Qualcomm Technologies, Inc. and/or its subsidiaries. All rights reserved.
+ *  2018-2021 Wikitude GmbH.
+ * 
+ * Confidential and Proprietary - Qualcomm Technologies, Inc.
+ *
+ ******************************************************************************/
+
+#ifndef BarcodeScanner_hpp
+#define BarcodeScanner_hpp
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wswitch-enum"
+#pragma clang diagnostic ignored "-Wsign-conversion"
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#include <zbar.h>
+#pragma clang diagnostic pop
+
+
+namespace wikitude::sdk {
+    class ManagedCameraFrame;
+}
+
+class BarcodeScanner {
+public:
+    class Observer {
+    public:
+        virtual ~Observer() = default;
+
+        virtual void recognizedBarcode(long id_, const std::string& barcode_) = 0;
+        virtual void lostBarcode(long id_) = 0;
+    };
+
+public:
+    BarcodeScanner(long id_, Observer& observer_);
+    ~BarcodeScanner();
+
+    void processCameraFrame(wikitude::sdk::ManagedCameraFrame& managedCameraFrame_);
+
+protected:
+    long                _id;
+
+    Observer&           _observer;
+
+    int                 _numberOfPreviouslyRecognizedTargets;
+
+    zbar::Image         _image;
+    zbar::ImageScanner  _imageScanner;
+};
+
+#endif /* BarcodeScanner_hpp */
