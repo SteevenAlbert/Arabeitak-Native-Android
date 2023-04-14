@@ -1,3 +1,10 @@
 include ':app'
 include ':plugins'
 include ':wikitude-sdk'
+// Include the host app project.
+include ':app'                                    // assumed existing content
+setBinding(new Binding([gradle: this]))                                // new
+evaluate(new File(                                                     // new
+        settingsDir.parentFile,                                              // new
+        'Arabeitak Android Native/arabeitak_flutter_ui/.android/include_flutter.groovy'                         // new
+))                                                                     // new
