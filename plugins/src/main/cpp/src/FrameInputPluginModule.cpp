@@ -13,7 +13,7 @@
 
 
 FrameInputPluginModule::FrameInputPluginModule(bool requestRendering_, std::function<void()> cameraReleaseHandler_)
-: _metadata(wikitude::sdk::ColorCameraFrameMetadata(-1, {640,480}, wikitude::sdk::CameraPosition::Back, wikitude::sdk::ColorSpace::YUV_420_888, 0))
+: _metadata(wikitude::sdk::ColorCameraFrameMetadata(-1, {1920,1080}, wikitude::sdk::CameraPosition::Back, wikitude::sdk::ColorSpace::YUV_420_888, 0))
 , _cameraReleaseHandler(cameraReleaseHandler_)
 , _frameId(-1)
 {

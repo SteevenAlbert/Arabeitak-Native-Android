@@ -415,7 +415,7 @@ void OpenGLESScanningEffectRenderingPluginModule::render(wikitude::sdk::Renderab
     const float viewportWidth = viewport[2] - viewport[0];
     const float viewportHeight = viewport[3] - viewport[1];
 
-    WT_GL_ASSERT(glViewport(0, 0, 640, 480));
+    WT_GL_ASSERT(glViewport(0, 0, 1920, 1080));
     WT_GL_ASSERT(glClear(GL_COLOR_BUFFER_BIT));
     WT_GL_ASSERT(glDrawElements(GL_TRIANGLES, sizeof(_indices)/sizeof(_indices[0]), GL_UNSIGNED_SHORT, 0));
     unbindFrameBufferObject();

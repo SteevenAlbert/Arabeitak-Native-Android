@@ -22,8 +22,8 @@ import java.nio.ByteBuffer;
 
 final class FrameInputPluginModule implements CameraCallback {
 
-    private static final int FRAME_WIDTH = 640;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 1920;
+    private static final int FRAME_HEIGHT = 1080;
 
     private final long nativeHandle;
     private final Camera camera;

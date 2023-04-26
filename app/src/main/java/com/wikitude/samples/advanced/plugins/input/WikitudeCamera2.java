@@ -70,6 +70,7 @@ public class WikitudeCamera2 implements Camera {
             }
         }
     };
+
     private CameraDevice.StateCallback cameraStateCallback = new CameraDevice.StateCallback() {
         @Override
         @SuppressWarnings("deprecation")

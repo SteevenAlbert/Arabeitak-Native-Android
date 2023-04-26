@@ -13,7 +13,10 @@ import com.wikitude.architect.ArchitectStartupConfiguration;
 import com.wikitude.architect.ArchitectView;
 import com.wikitude.common.camera.CameraSettings;
 
+import com.wikitude.samples.advanced.plugins.FaceDetectionPluginExtension;
+import com.wikitude.samples.advanced.plugins.QrPluginExtension;
 import com.wikitude.samples.advanced.plugins.input.CustomCameraExtension;
+import com.wikitude.samples.advanced.plugins.input.SimpleInputPluginExtension;
 
 import android.os.Bundle;
 
@@ -73,6 +76,7 @@ public class ARWikitudeActivity extends AppCompatActivity {
          * the required device features to run the ArchitectView and the LicenseKey which
          * has to be set to enable an AR-Experience.
          */
+
         final ArchitectStartupConfiguration config = new ArchitectStartupConfiguration(); // Creates a config with its default values.
         config.setLicenseKey(getString(R.string.wikitude_license_key)); // Has to be set, to get a trial license key visit http://www.wikitude.com/developer/licenses.
         config.setCameraPosition(CameraSettings.CameraPosition.BACK);       // The default camera is the first camera available for the system.
@@ -93,11 +97,16 @@ public class ARWikitudeActivity extends AppCompatActivity {
         architectView.onPostCreate();
 
         //Register Native Plugins Here
+//        FaceDetectionPluginExtension plugin2 = new FaceDetectionPluginExtension(this, architectView);
+//        plugin2.onPostCreate();
+//        SimpleInputPluginExtension plugin3 = new SimpleInputPluginExtension(this, architectView);
+//        plugin3.onPostCreate();
         CustomCameraExtension plugin = new CustomCameraExtension(this, architectView);
         plugin.onPostCreate();
 
+
         try {
-            architectView.load("samples/13_PluginsAPI_2_FaceDetection/index.html");
+            architectView.load("samples/13_PluginsAPI_1_QR&Barcode/index.html");
         } catch (IOException e) {
             Toast.makeText(this, getString(R.string.error_loading_ar_experience), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception while loading arExperience " + arExperience + ".", e);

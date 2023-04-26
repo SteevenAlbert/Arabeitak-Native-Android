@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'Intro_page.dart';
-import 'home_page.dart';
+import 'presentation/Intro_page.dart';
+import 'presentation/home_page.dart';
+//import 'package:firebase_core/firebase_core.dart';
+import 'presentation/auth/login.dart';
 
 const platform = MethodChannel('flutter.native/helper');
 Future<void> navigateToPage(String pageName) async {
@@ -12,7 +14,11 @@ Future<void> navigateToPage(String pageName) async {
   }
 }
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -24,6 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/home': (context) => const HomePage(),
+        '/auth/login': (context) => LoginPage(),
       },
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
