@@ -6,5 +6,5 @@ include ':app'                                    // assumed existing content
 setBinding(new Binding([gradle: this]))                                // new
 evaluate(new File(                                                     // new
         settingsDir.parentFile,                                              // new
-        'Arabeitak Android Native/arabeitak_flutter_ui/.android/include_flutter.groovy'                         // new
+        'Arabeitak-Native-Android/arabeitak_flutter_ui/.android/include_flutter.groovy'                         // new
 ))                                                                     // new
