@@ -1,66 +1,68 @@
 import 'package:flutter/material.dart';
-import '/main.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 88.0, 0, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              //Add text welcome Username aligned to the left
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-                child: Text(
-                  'Welcome, Steven',
-                  style: TextStyle(
-                    fontSize: 24,
-                    //make it bold
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(198, 42, 42, 42),
-                  ),
-                ),
-              ),
-
-              Image.asset(
-                'assets/images/corolla.png',
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: 16),
-              Expanded(
-                child: ListView(
-                  children: [
-                    _buildFixListItem(context, 'Add Coolant', '/coolant'),
-                    _buildFixListItem(context, 'Change Wipers', '/wipers'),
-                    _buildFixListItem(
-                        context, 'Jumpstart Battery', '/jumpstart'),
-                    _buildFixListItem(context, 'Change Tires', '/tires'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        leading: const BackButton(
+          color: Colors.black,
         ),
       ),
-    );
-  }
-
-  Widget _buildFixListItem(BuildContext context, String title, String route) {
-    return ListTile(
-      title: Text(title),
-      trailing: Icon(Icons.arrow_forward),
-      onTap: () {
-        // Jump to home screen
-        navigateToPage(route);
-      },
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            //TODO: UI
+            TextButton(
+                onPressed: (() {
+                  // Navigator.pushNamed(context, '');
+                }),
+                style: ButtonStyle(
+                    shadowColor: MaterialStateProperty.all(Colors.black12)),
+                child: const Text("Remote Assistance",
+                    style: TextStyle(color: Colors.black))),
+            TextButton(
+                onPressed: (() {
+                  Navigator.pushNamed(context, '/owned_cars_page');
+                }),
+                style: ButtonStyle(
+                    shadowColor: MaterialStateProperty.all(Colors.black12)),
+                child: const Text("Selected Car Model",
+                    style: TextStyle(color: Colors.black))),
+            TextButton(
+                onPressed: (() {
+                  Navigator.pushNamed(context, '/choices');
+                }),
+                style: ButtonStyle(
+                    shadowColor: MaterialStateProperty.all(Colors.black12)),
+                child: const Text("Do It Yourself",
+                    style: TextStyle(color: Colors.black))),
+            TextButton(
+                onPressed: (() {
+                  // Navigator.pushNamed(context, '');
+                }),
+                style: ButtonStyle(
+                    shadowColor: MaterialStateProperty.all(Colors.black12)),
+                child: const Text("Settings",
+                    style: TextStyle(color: Colors.black))),
+          ],
+        ),
+      ),
     );
   }
 }
