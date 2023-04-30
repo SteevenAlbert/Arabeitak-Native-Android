@@ -1,78 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:arabeitak_flutter_ui/repositories/car.dart';
 
-String value1 = "";
-int? list2index = -1;
-List<dynamic> list2 = [""];
-String value2 = "";
-String value3 = "";
+String? selectedCardModel = "";
+String? selectedMake = "";
+String? selectedYear = "";
 
 class SelectCarModelPage extends StatefulWidget {
-  SelectCarModelPage({super.key});
+  const SelectCarModelPage({Key? key}) : super(key: key);
 
   @override
   State<SelectCarModelPage> createState() => _SelectCarModelPageState();
 }
 
 class _SelectCarModelPageState extends State<SelectCarModelPage> {
-  final ValueNotifier<List<dynamic>> _list2notifier =
-      ValueNotifier<List<dynamic>>(list2);
-
-  refresh() {
+  onCarModelChanged(String? value) {
+    if (value != selectedCardModel) selectedMake = null;
     setState(() {
-      list2index = Car.carsList.indexWhere((c) => c.containsKey(value1));
-      list2 = Car.carsList
-          .elementAt(list2index!)
-          .values
-          .map((e) => e.toString().substring(1, e.toString().length - 1))
-          .toList();
-      _list2notifier.value = list2;
-      print(list2);
+      selectedCardModel = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        leading: const BackButton(
-          color: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          leading: const BackButton(
+            color: Colors.black,
+          ),
         ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
+        body:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           //TODO: car name field + UI + saving car (decline if car not supported)
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            DropdownMenu(
-              n: 1,
-              list: Car.carsList
-                  .map((e) => e.keys
-                      .toString()
-                      .substring(1, e.keys.toString().length - 1))
-                  .toList(),
-              notify: refresh,
-            ),
-            ValueListenableBuilder<List<dynamic>>(
-              valueListenable: _list2notifier,
-              builder: (context, list, child) {
-                return DropdownMenu(
-                  n: 2,
-                  list: list,
-                  listnotifier: _list2notifier,
-                  notify: refresh,
-                );
-                // return Text(list.toString());
-              },
-            ),
-            DropdownMenu(
-              n: 3,
-              list: Car.yearList,
-              notify: refresh,
-            )
-          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // DropdownMenu(
+              //     value: selectedCardModel,
+              //     list: Car.carsList.keys,
+              //     onChanged: onCarModelChanged),
+              DropdownButton<String?>(
+                  value: selectedCardModel,
+                  items: Car.carsList.keys.map((e) {
+                    return DropdownMenuItem<String?>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                  onChanged: onCarModelChanged),
+              // DropdownMenu(
+              //     value: selectedMake,
+              //     list: (Car.carsList[selectedCardModel] ?? []),
+              //     onChanged: (val) {
+              //       setState(() {
+              //         selectedMake = val!;
+              //       });
+              //     }),
+              DropdownButton<String?>(
+                  value: selectedMake,
+                  items: (Car.carsList[selectedCardModel] ?? []).map((e) {
+                    return DropdownMenuItem<String?>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                  onChanged: (val) {
+                    setState(() {
+                      selectedMake = val!;
+                    });
+                  }),
+              // DropdownMenu(
+              //     value: selectedYear,
+              //     list: Car.yearList,
+              //     onChanged: (val) {
+              //       setState(() {
+              //         selectedYear = val!;
+              //       });
+              //     }),
+              DropdownButton<String?>(
+                  value: selectedYear,
+                  items: Car.yearList.map((e) {
+                    return DropdownMenuItem<String?>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                  onChanged: (val) {
+                    setState(() {
+                      selectedYear = val!;
+                    });
+                  }),
+            ],
+          ),
           Container(
             alignment: Alignment.bottomRight,
             padding: EdgeInsets.only(
@@ -88,60 +108,42 @@ class _SelectCarModelPageState extends State<SelectCarModelPage> {
               ),
             ),
           )
-        ],
-      ),
-    );
+        ]));
   }
 }
 
-class DropdownMenu extends StatefulWidget {
-  int n;
-  final List list;
-  ValueNotifier<List<dynamic>>? listnotifier;
-  Function() notify;
+//TODO: figure out why it doesn't work when put in a seperate custom widget 
+// class DropdownMenu extends StatefulWidget {
+//   String? value;
+//   Iterable list;
+//   Function(String?) onChanged;
 
-  DropdownMenu(
-      {super.key,
-      required this.n,
-      required this.list,
-      this.listnotifier,
-      required this.notify});
+//   DropdownMenu(
+//       {super.key,
+//       required this.value,
+//       required this.list,
+//       required this.onChanged});
 
-  @override
-  State<DropdownMenu> createState() => _DropdownMenuState();
-}
+//   @override
+//   State<DropdownMenu> createState() => _DropdownMenuState();
+// }
 
-class _DropdownMenuState extends State<DropdownMenu> {
-  late List list = widget.list;
-  late int? n = widget.n;
-  late Function() notify = widget.notify;
-  late String dropdownValue = list.isNotEmpty ? list.first : "";
+// class _DropdownMenuState extends State<DropdownMenu> {
+//   late String? n = widget.value;
+//   late var list = widget.list;
+//   late Function(String?) onChanged = widget.onChanged;
+//   late String dropdownValue = list.isNotEmpty ? list.first : "";
 
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      items: list.map<DropdownMenuItem<String>>((value) {
-        return DropdownMenuItem<String>(
-          value: value.toString(),
-          child: Text(value.toString()),
-        );
-      }).toList(),
-      onChanged: (String? value) {
-        if (n == 1) {
-          dropdownValue = value!;
-          value1 = value;
-          notify();
-        } else if (n == 2) {
-          value2 = value!;
-          dropdownValue = value;
-        } else if (n == 3) {
-          dropdownValue = value!;
-          value3 = value;
-        }
-        //TODO: second drop down menu not updating
-        setState(() {});
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return DropdownButton<String?>(
+//         value: dropdownValue,
+//         items: list.map<DropdownMenuItem<String?>>((e) {
+//           return DropdownMenuItem<String?>(
+//             value: e,
+//             child: Text('$e'),
+//           );
+//         }).toList(),
+//         onChanged: onChanged);
+//   }
+// }
