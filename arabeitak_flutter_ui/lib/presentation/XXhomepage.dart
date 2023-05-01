@@ -41,7 +41,7 @@ class Homepage extends StatelessWidget {
                     _buildFixListItem(
                         context, 'Add Coolant', '/check_your_coolant'),
                     _buildFixListItem(context, 'Change Wipers',
-                        '/change_our_windshield_wiper_blades'),
+                        '/change_your_windshield_wiper_blades'),
                     _buildFixListItem(context, 'Jumpstart Battery',
                         '/jumpstart_a_dead_battery'),
                     _buildFixListItem(
