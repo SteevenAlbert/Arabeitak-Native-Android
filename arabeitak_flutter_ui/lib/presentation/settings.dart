@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SettingPage extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   @override
-  _SettingPageState createState() => _SettingPageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingsPageState extends State<SettingsPage> {
   @override
   void dispose() {
     super.dispose();

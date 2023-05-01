@@ -14,7 +14,7 @@ class SelectCarModelPage extends StatefulWidget {
 
 class _SelectCarModelPageState extends State<SelectCarModelPage> {
   onCarModelChanged(String? value) {
-    if (value != selectedCardModel) selectedMake = null;
+    if (value != selectedCardModel) selectedMake = "";
     setState(() {
       selectedCardModel = value;
     });
@@ -42,10 +42,10 @@ class _SelectCarModelPageState extends State<SelectCarModelPage> {
               //     onChanged: onCarModelChanged),
               DropdownButton<String?>(
                   value: selectedCardModel,
-                  items: Car.carsList.keys.map((e) {
+                  items: Car.carsList.keys.map((e1) {
                     return DropdownMenuItem<String?>(
-                      value: e,
-                      child: Text(e),
+                      value: e1,
+                      child: Text(e1),
                     );
                   }).toList(),
                   onChanged: onCarModelChanged),
@@ -59,15 +59,15 @@ class _SelectCarModelPageState extends State<SelectCarModelPage> {
               //     }),
               DropdownButton<String?>(
                   value: selectedMake,
-                  items: (Car.carsList[selectedCardModel] ?? []).map((e) {
+                  items: (Car.carsList[selectedCardModel] ?? []).map((e2) {
                     return DropdownMenuItem<String?>(
-                      value: e,
-                      child: Text(e),
+                      value: e2,
+                      child: Text(e2),
                     );
                   }).toList(),
-                  onChanged: (val) {
+                  onChanged: (val2) {
                     setState(() {
-                      selectedMake = val!;
+                      selectedMake = val2!;
                     });
                   }),
               // DropdownMenu(
@@ -80,15 +80,15 @@ class _SelectCarModelPageState extends State<SelectCarModelPage> {
               //     }),
               DropdownButton<String?>(
                   value: selectedYear,
-                  items: Car.yearList.map((e) {
+                  items: Car.yearList.map((e3) {
                     return DropdownMenuItem<String?>(
-                      value: e,
-                      child: Text(e),
+                      value: e3,
+                      child: Text(e3),
                     );
                   }).toList(),
-                  onChanged: (val) {
+                  onChanged: (val3) {
                     setState(() {
-                      selectedYear = val!;
+                      selectedYear = val3!;
                     });
                   }),
             ],

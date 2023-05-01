@@ -24,7 +24,7 @@ class _ChoicesPageState extends State<ChoicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: customWhiteColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
@@ -32,17 +32,30 @@ class _ChoicesPageState extends State<ChoicesPage> {
           color: Colors.black,
         ),
       ),
-      body: Center(
+      body:
+          // Container(
+          //   decoration: BoxDecoration(
+          //     color: Colors.black,
+          //     image: const DecorationImage(
+          //         image: AssetImage("assets/images/bg/option2.png"),
+          //         fit: BoxFit.cover),
+          //   ),
+          //   child:
+          Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             customCardButton(
                 context, "augmented_reality", "AR Instructions", "ar_list"),
-            const Text("or"),
+            const Text(
+              "or...",
+              style: TextStyle(fontSize: 15),
+            ),
             customCardButton(context, "text", "Text Instructions", "text_list"),
           ],
         ),
       ),
+      // ),
     );
   }
 }
@@ -83,7 +96,10 @@ Widget customCardButton(
                 padding: const EdgeInsets.only(top: 5.0),
                 child: Text(
                   text,
-                  style: const TextStyle(color: Colors.black),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               )

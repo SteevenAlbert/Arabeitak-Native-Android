@@ -55,13 +55,15 @@ class MyApp extends StatelessWidget {
         '/text_list': (context) => const TextList(),
         '/preview_text_instructions_page': (context) =>
             PreviewTextInstructionsPage(),
-        'settings': ((context) => SettingPage())
+        '/settings': ((context) => SettingsPage())
       },
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        fontFamily: GoogleFonts.openSans().fontFamily,
+        fontFamily: GoogleFonts.openSans(
+          fontSize: 15,
+        ).fontFamily,
       ),
       home: const IntroPage(),
     );

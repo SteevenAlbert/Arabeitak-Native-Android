@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transformable_list_view/transformable_list_view.dart';
 
 import '../main.dart';
 
@@ -9,7 +10,6 @@ class ARList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: const Text("ARabeitak", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         leading: const BackButton(
@@ -23,11 +23,12 @@ class ARList extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image(
-              image: const AssetImage("assets/images/car.png"),
+              image: const AssetImage("assets/images/hologram.png"),
               alignment: Alignment.centerLeft,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width / 2,
             ),
+            // ),
             Container(
               alignment: Alignment.centerLeft,
               width: MediaQuery.of(context).size.width / 2,
@@ -38,7 +39,6 @@ class ARList extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: ListView(
-                    shrinkWrap: true,
                     children: ListTile.divideTiles(context: context, tiles: [
                       CustomListTile(
                           context, "coolant", "Add Coolant", "/ar/coolant"),
