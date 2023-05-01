@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'package:firebase_core/firebase_core.dart';
+// /import 'package:firebase_core/firebase_core.dart';
 // import 'presentation/Intro_page.dart';
 import 'presentation/introduction_page.dart';
 // import 'presentation/auth/login.dart';
@@ -28,8 +30,14 @@ Future<void> navigateToPage(String pageName) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  var delegate = await LocalizationDelegate.create(
+      fallbackLocale: 'en',
+      supportedLocales: [
+        'en',
+        'ar',
+      ]);
 
-  runApp(const MyApp());
+  runApp(LocalizedApp(delegate, MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -42,30 +50,42 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        '/auth/log_in': (context) => LogInPage(),
-        '/auth/sign_up': (context) => SignUpPage(),
-        '/home': (context) => const HomePage(),
-        '/owned_cars_page': (context) => OwnedCarsPage(),
-        '/select_car_page': (context) => SelectCarModelPage(),
-        '/choices': (context) => ChoicesPage(),
-        '/ar_list': (context) => const ARList(),
-        '/text_list': (context) => const TextList(),
-        '/preview_text_instructions_page': (context) =>
-            PreviewTextInstructionsPage(),
-        '/settings': ((context) => SettingsPage())
-      },
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: GoogleFonts.openSans(
-          fontSize: 15,
-        ).fontFamily,
-      ),
-      home: const IntroPage(),
-    );
+    var localizationDelegate = LocalizedApp.of(context).delegate;
+
+    return LocalizationProvider(
+        state: LocalizationProvider.of(context).state,
+        child: MaterialApp(
+          initialRoute: '/',
+          routes: {
+            '/auth/log_in': (context) => LogInPage(),
+            '/auth/sign_up': (context) => SignUpPage(),
+            '/home': (context) => const HomePage(),
+            '/owned_cars_page': (context) => OwnedCarsPage(),
+            '/select_car_page': (context) => SelectCarModelPage(),
+            '/choices': (context) => ChoicesPage(),
+            '/ar_list': (context) => const ARList(),
+            '/text_list': (context) => const TextList(),
+            '/preview_text_instructions_page': (context) =>
+                PreviewTextInstructionsPage(),
+            '/settings': ((context) => SettingsPage())
+          },
+          title: 'ARabeitak',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(primary: const Color(0xFF111111)),
+            fontFamily: GoogleFonts.openSans(
+              fontSize: 15,
+            ).fontFamily,
+          ),
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            localizationDelegate
+          ],
+          supportedLocales: localizationDelegate.supportedLocales,
+          locale: localizationDelegate.currentLocale,
+          home: const IntroPage(),
+        ));
   }
 }

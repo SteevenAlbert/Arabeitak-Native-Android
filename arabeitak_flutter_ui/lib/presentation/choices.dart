@@ -33,6 +33,7 @@ class _ChoicesPageState extends State<ChoicesPage> {
         ),
       ),
       body:
+          // TODO: UI
           // Container(
           //   decoration: BoxDecoration(
           //     color: Colors.black,
@@ -47,10 +48,13 @@ class _ChoicesPageState extends State<ChoicesPage> {
           children: [
             customCardButton(
                 context, "augmented_reality", "AR Instructions", "ar_list"),
-            const Text(
-              "or...",
-              style: TextStyle(fontSize: 15),
-            ),
+            // const Text(
+            //   "or...",
+            //   style: TextStyle(
+            //     color: Colors.black,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
             customCardButton(context, "text", "Text Instructions", "text_list"),
           ],
         ),
@@ -65,7 +69,7 @@ Widget customCardButton(
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(25),
-      color: customWhiteColor,
+      color: Colors.white,
       boxShadow: const [
         BoxShadow(
           blurRadius: 30,

@@ -14,7 +14,7 @@ class TextList extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      //TODO: update procedures list + UI
+      //TODO: read with sections from procedures list + UI
       body: SafeArea(
         left: true,
         child: Row(

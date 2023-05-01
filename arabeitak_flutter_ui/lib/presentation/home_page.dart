@@ -45,10 +45,15 @@ class _HomePageState extends State<HomePage> {
                         "Remote Assistance", null),
 
                     customButton(
-                        context, 'maintainance', "Do It Yourself", '/choices'),
+                        // context, 'maintainance', "Do It Yourself", '/choices'),
+                        context,
+                        'maintainance',
+                        "Do It Yourself",
+                        '/ar_list'),
+
                     // customButton(context, 'select_car', "Selected Car Model",
                     //     '/owned_cars_page'),
-                    customButton(context, 'settings', "Settings", '/settings'),
+                    // customButton(context, 'settings', "Settings", '/settings'),
                   ],
                 ),
               ],

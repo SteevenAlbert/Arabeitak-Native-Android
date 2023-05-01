@@ -1,5 +1,5 @@
 class Procedures {
-  var proceduresList = {
+  static var proceduresList = {
     'Getting Started': [
       'Find Vehicle Identification Number (VIN)',
       'Open Car Hood',
@@ -10,25 +10,25 @@ class Procedures {
         'Check Your': [
           'Coolant',
           'Engine Oil',
-          'Brake Fluid',
+          // 'Brake Fluid',
           'Windshield Fluid'
         ]
       },
       'Change Flat Tire',
-      'Change Your Windshield Wiper Blades',
+      // 'Change Your Windshield Wiper Blades',
       {
         'Change Light Bulbs of': [
           'Headlights',
           'Front Turn Signal / Parking Lights',
           'Rear Turn Signal Lights',
           'Stop / Rear Side Marker / Tail Lights',
-          'Brake Lights'
+          // 'Brake Lights'
         ]
       },
       'Replace The Air Conditioning Filter',
       'Replace The Electronic Key Battery',
     ],
-    'Get Familiar With Your Car': [
+    'Get More Familiar With Your Car': [
       {
         'Adjust': [
           'Front Seats',
