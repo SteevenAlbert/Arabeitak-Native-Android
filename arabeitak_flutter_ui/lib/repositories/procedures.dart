@@ -15,7 +15,7 @@ class Procedures {
         ]
       },
       'Change Flat Tire',
-      // 'Change Your Windshield Wiper Blades',
+      'Change Your Windshield Wiper Blades',
       {
         'Change Light Bulbs of': [
           'Headlights',

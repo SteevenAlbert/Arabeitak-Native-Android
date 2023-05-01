@@ -29,12 +29,18 @@ class _HomePageState extends State<HomePage> {
           children: [
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Text(
-                    "Welcome",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
+                Align(
+                  // alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 25.0,
+                      // left: MediaQuery.of(context).size.width / 6,
+                    ),
+                    child: Text(
+                      "Welcome",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
+                    ),
                   ),
                 ),
                 Row(

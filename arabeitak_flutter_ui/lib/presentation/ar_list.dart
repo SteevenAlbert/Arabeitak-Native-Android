@@ -91,6 +91,7 @@ class ARList extends StatelessWidget {
                                         path: e
                                             .toString()
                                             .toLowerCase()
+                                            .replaceAll('/', '')
                                             .replaceAll(' ', '_'))
                                   else
                                     for (String v in convertToMap(e.toString())
@@ -106,6 +107,7 @@ class ARList extends StatelessWidget {
                                           path:
                                               '${convertToMap(e.toString()).keys.first} $v'
                                                   .toLowerCase()
+                                                  .replaceAll('/', '')
                                                   .replaceAll(' ', '_'))
                             ]).toList(),
                           ),

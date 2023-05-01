@@ -38,11 +38,14 @@ class Homepage extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
-                    _buildFixListItem(context, 'Add Coolant', '/coolant'),
-                    _buildFixListItem(context, 'Change Wipers', '/wipers'),
                     _buildFixListItem(
-                        context, 'Jumpstart Battery', '/jumpstart'),
-                    _buildFixListItem(context, 'Change Tires', '/tires'),
+                        context, 'Add Coolant', '/check_your_coolant'),
+                    _buildFixListItem(context, 'Change Wipers',
+                        '/change_our_windshield_wiper_blades'),
+                    _buildFixListItem(context, 'Jumpstart Battery',
+                        '/jumpstart_a_dead_battery'),
+                    _buildFixListItem(
+                        context, 'Change Tires', '/change_flat_tire'),
                   ],
                 ),
               ),
