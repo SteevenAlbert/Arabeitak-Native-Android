@@ -92,11 +92,20 @@ public class MainActivity extends AppCompatActivity  {
         );
     }
     private void navigateToPage(String pageName) {
-        if(pageName.equals("/coolant")){
+        if(pageName.equals("/ar/coolant")){
             Log.d(TAG, "navigateToPage: " + pageName);
             Intent intent = new Intent(MainActivity.this, ARWikitudeActivity.class);
+            intent.putExtra("procedure", "add_coolant");
             startActivity(intent);
+        }else if(pageName.equals("/ar/change_tyre")){
+            Log.d(TAG, "navigateToPage: " + pageName);
+            Intent intent = new Intent(MainActivity.this, ARWikitudeActivity.class);
+            intent.putExtra("procedure", "change_tyres");
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "Route not found! route: " + pageName);
         }
+
 
     }
 }

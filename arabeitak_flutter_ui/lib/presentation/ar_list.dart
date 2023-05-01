@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class ARList extends StatelessWidget {
   const ARList({super.key});
 
@@ -39,14 +41,15 @@ class ARList extends StatelessWidget {
                     shrinkWrap: true,
                     children: ListTile.divideTiles(context: context, tiles: [
                       CustomListTile(
-                          context, "coolant", "Add Coolant", "/ar/intro_page"),
-                      CustomListTile(context, "tyre", "Change Tyre", null),
+                          context, "coolant", "Add Coolant", "/ar/coolant"),
                       CustomListTile(
-                          context, "car_battery", "Jumpstarting", null),
+                          context, "tyre", "Change Tyres", "/ar/change_tyre"),
                       CustomListTile(
-                          context, "headlight", "Change Headlights", null),
+                          context, "car_battery", "Jumpstarting", ""),
                       CustomListTile(
-                          context, "windshield", "Replace Wipers", null),
+                          context, "headlight", "Change Headlights", ""),
+                      CustomListTile(
+                          context, "windshield", "Replace Wipers", ""),
                     ]).toList(),
                   ),
                 ),
@@ -60,11 +63,12 @@ class ARList extends StatelessWidget {
 }
 
 Widget CustomListTile(
-    BuildContext context, String icon, String text, String? path) {
+    BuildContext context, String icon, String text, String path) {
   return Container(
     height: MediaQuery.of(context).size.height / 7,
     padding: EdgeInsets.only(left: MediaQuery.of(context).size.height / 57),
     child: ListTile(
+      onTap: () => navigateToPage(path),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -95,7 +99,7 @@ Widget CustomListTile(
             onPressed: () {
               if (path == null) {
               } else {
-                Navigator.pushNamed(context, path);
+                () => navigateToPage(path);
               }
             },
             child: Icon(

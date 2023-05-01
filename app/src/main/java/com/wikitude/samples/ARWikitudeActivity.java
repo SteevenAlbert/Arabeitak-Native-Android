@@ -13,11 +13,7 @@ import com.wikitude.architect.ArchitectStartupConfiguration;
 import com.wikitude.architect.ArchitectView;
 import com.wikitude.common.camera.CameraSettings;
 
-import com.wikitude.samples.advanced.plugins.FaceDetectionPluginExtension;
-import com.wikitude.samples.advanced.plugins.QrPluginExtension;
-import com.wikitude.samples.advanced.plugins.input.CustomCameraExtension;
-import com.wikitude.samples.advanced.plugins.input.SimpleInputPluginExtension;
-
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -95,18 +91,25 @@ public class ARWikitudeActivity extends AppCompatActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         architectView.onPostCreate();
-
+        Intent intent = getIntent();
+        String procedure = intent.getStringExtra("procedure");
         //Register Native Plugins Here
 //        FaceDetectionPluginExtension plugin2 = new FaceDetectionPluginExtension(this, architectView);
 //        plugin2.onPostCreate();
 //        SimpleInputPluginExtension plugin3 = new SimpleInputPluginExtension(this, architectView);
 //        plugin3.onPostCreate();
-        CustomCameraExtension plugin = new CustomCameraExtension(this, architectView);
-        plugin.onPostCreate();
+//        CustomCameraExtension plugin = new CustomCameraExtension(this, architectView);
+//        plugin.onPostCreate();
 
 
         try {
-            architectView.load("samples/13_PluginsAPI_1_QR&Barcode/index.html");
+            if(procedure.equals("change_tyres")){
+                architectView.load("samples/change_tyres/index.html");
+            }else if(procedure.equals("add_coolant")){
+                architectView.load("samples/add_coolant/index.html");
+            }else{
+                architectView.load("samples/null/index.html");
+            }
         } catch (IOException e) {
             Toast.makeText(this, getString(R.string.error_loading_ar_experience), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception while loading arExperience " + arExperience + ".", e);
