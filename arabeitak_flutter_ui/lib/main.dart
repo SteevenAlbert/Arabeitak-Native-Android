@@ -18,6 +18,7 @@ import 'presentation/ar_list.dart';
 import 'presentation/text_list.dart';
 import 'presentation/preview_text_instructions_page.dart';
 import 'presentation/settings.dart';
+import 'presentation/gesture/gesture_page.dart';
 
 const platform = MethodChannel('flutter.native/helper');
 Future<void> navigateToPage(String pageName) async {
@@ -67,7 +68,8 @@ class MyApp extends StatelessWidget {
             '/text_list': (context) => const TextList(),
             '/preview_text_instructions_page': (context) =>
                 PreviewTextInstructionsPage(),
-            '/settings': ((context) => SettingsPage())
+            '/settings': ((context) => SettingsPage()),
+            '/hand_gesture': ((context) => const GesturePage()),
           },
           title: 'ARabeitak',
           debugShowCheckedModeBanner: false,
