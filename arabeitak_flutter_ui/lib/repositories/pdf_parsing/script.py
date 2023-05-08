@@ -1,6 +1,12 @@
 from py_pdf_parser.loaders import load_file
 from pprint import pprint
-
+from flask import Flask, request, jsonify
+import os
+ 
+app = Flask(__name__)
+ 
+ 
+@app.route('/pdf_instructions',methods=['GET'])
 def get_instructions_from_manual(inPDFpath, keywords):
     document = load_file(inPDFpath)
 
@@ -57,42 +63,3 @@ def get_instructions_from_manual(inPDFpath, keywords):
     }
 
     return output
-
-
-
-
-
-import os
-
-cd = os.path.dirname(__file__)
-inPDF = "2016_toyota_corolla.pdf"
-outXML = "output.xml"
-outHTML = "output.html"
-inPDFpath = cd+"\\"+inPDF
-outXMLpath = cd+"\\"+outXML
-outHTMLpath = cd+"\\"+outHTML
-
-# keywords= [ "Find Vehicle Identification Number", "VIN"]
-# keywords= [ "Hood", "hood" ]
-# keywords= [ "Battery", "battery" ] #!!!
-# keywords= [ "coolant" ]
-# keywords = ["engine oil"]
-# keywords = ["Brake fluid"]
-# keywords = ["Windshield fluid", "windshield fluid"]
-# keywords = ["Flat tire","flat tire"] #!!!
-# keywords = ["Wiper blades", "wiper blades"] 
-# keywords= [ "Headlights", "headlights"] #!!!
-# keywords = ["Front turn signal/parking lights"]
-# keywords = ["rear turn signal lights"]
-# keywords =["Stop/tail/rear side marker lights"]
-# keywords = ["Brake lights", "brake lights"]
-keywords = ["Air conditioning filter"]
-# keywords = ["Wireless remote control/electronic key \nbattery"]
-# keywords = ["Front seats"] #!!!
-# keywords = ["Folding down the rear seatbacks"]
-# keywords = ["Head restraints"] #???
-# keywords = ["Outside rear view mirrors"]
-# keywords = ["Moon roof"] #???
-# keywords = ["Warning lights","Warning light"]
-
-pprint(get_instructions_from_manual(inPDFpath, keywords))

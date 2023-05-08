@@ -43,6 +43,7 @@ dependencies:
   path_provider:
   path:
   badges: ^2.0.3
+  dartpy: ^0.0.1+4
 
 
 dev_dependencies:
