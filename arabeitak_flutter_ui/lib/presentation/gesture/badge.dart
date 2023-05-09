@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 
 class BadgeTrig extends StatelessWidget {
   final Widget widget;
@@ -8,13 +8,13 @@ class BadgeTrig extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Badge(
+    return badge.Badge(
         badgeContent:
             trigger == 1 ? const Text('Danger') : const Text('Warning'),
-        shape: BadgeShape.square,
+        shape: badge.BadgeShape.square,
         borderRadius: BorderRadius.circular(8),
         badgeColor: trigger == 1 ? Colors.red : Colors.yellow,
-        position: const BadgePosition(start: -15, top: -12),
+        position: const badge.BadgePosition(start: -15, top: -12),
         child: widget);
   }
 }
