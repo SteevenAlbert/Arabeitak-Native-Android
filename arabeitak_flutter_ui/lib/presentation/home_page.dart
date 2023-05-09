@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+import '../main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,15 +52,15 @@ class _HomePageState extends State<HomePage> {
                         "Remote Assistance", null),
 
                     customButton(
-                        // context, 'maintainance', "Do It Yourself", '/choices'),
-                        context,
-                        'maintainance',
-                        "Do It Yourself",
-                        '/ar_list'),
+                        context, 'maintainance', "Do It Yourself", '/choices'),
+                    // context,
+                    // 'maintainance',
+                    // "Do It Yourself",
+                    // '/ar_list'),
 
-                    // customButton(context, 'select_car', "Selected Car Model",
-                    //     '/owned_cars_page'),
-                    // customButton(context, 'settings', "Settings", '/settings'),
+                    customButton(context, 'select_car', "Selected Car Model",
+                        '/owned_cars_page'),
+                    customButton(context, 'settings', "Settings", '/settings'),
                   ],
                 ),
               ],
@@ -75,8 +76,8 @@ Widget customButton(
     BuildContext context, String icon, String text, String? path) {
   return GestureDetector(
       child: Container(
-          width: MediaQuery.of(context).size.width / 4,
-          height: MediaQuery.of(context).size.width / 4,
+          width: MediaQuery.of(context).size.width / 5,
+          height: MediaQuery.of(context).size.width / 5,
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
@@ -107,6 +108,7 @@ Widget customButton(
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(text,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
                         // color: Colors.black,

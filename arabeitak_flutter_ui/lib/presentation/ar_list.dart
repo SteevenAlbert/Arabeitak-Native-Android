@@ -88,11 +88,8 @@ class ARList extends StatelessWidget {
                                         context: context,
                                         icon: e.toString().replaceAll('/', ''),
                                         text: e.toString(),
-                                        path: e
-                                            .toString()
-                                            .toLowerCase()
-                                            .replaceAll('/', '')
-                                            .replaceAll(' ', '_'))
+                                        path:
+                                            'ar_${e.toString().toLowerCase().replaceAll('/', '').replaceAll(' ', '_')}')
                                   else
                                     for (String v in convertToMap(e.toString())
                                         .values
@@ -100,7 +97,7 @@ class ARList extends StatelessWidget {
                                       CustomListTile(
                                           context: context,
                                           icon:
-                                              '${convertToMap(e.toString()).keys.first} $v'
+                                              'ar_${convertToMap(e.toString()).keys.first} $v'
                                                   .replaceAll('/', ''),
                                           text:
                                               '${convertToMap(e.toString()).keys.first} $v',
@@ -172,7 +169,7 @@ Widget CustomListTile(
             onPressed: () {
               if (path == null) {
               } else {
-                () => navigateToPage(path);
+                () => navigateToPage('/$path');
               }
             },
             child: Icon(

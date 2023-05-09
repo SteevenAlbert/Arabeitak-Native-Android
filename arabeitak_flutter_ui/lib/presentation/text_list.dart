@@ -1,5 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:transformable_list_view/transformable_list_view.dart';
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:arabeitak_flutter_ui/repositories/procedures.dart';
+
+import '../main.dart';
+
+Map<String, List<String>> convertToMap(String e) {
+  String dataSp = e.trim().substring(1, e.length - 1);
+  String key = dataSp.split(':')[0];
+  String value = dataSp.split(':')[1].trim();
+  List<String> valueList = value.substring(1, value.length - 1).split(',');
+  valueList = valueList.map((e) => e.trim()).toList();
+  Map<String, List<String>> mapData = {};
+  mapData[key] = valueList;
+  return mapData;
+}
+
+Iterable<String> sections = Procedures.proceduresList.keys;
 
 class TextList extends StatelessWidget {
   const TextList({super.key});
@@ -14,11 +32,9 @@ class TextList extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      //TODO: read with sections from procedures list + UI
       body: SafeArea(
         left: true,
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Image(
               image: const AssetImage("assets/images/line_drawing.png"),
@@ -28,28 +44,76 @@ class TextList extends StatelessWidget {
             ),
             // ),
             Container(
-              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 10),
+              color: Colors.transparent,
+              height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width / 2,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width / 15,
+              child: ContainedTabBarView(
+                tabBarProperties: TabBarProperties(
+                  indicatorColor: Colors.black,
+                  indicatorWeight: 3,
+                  labelPadding: const EdgeInsets.all(10),
                 ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: ListView(
-                    children: ListTile.divideTiles(context: context, tiles: [
-                      CustomListTile(
-                          context, "coolant", "Add Coolant", "/ar/intro_page"),
-                      CustomListTile(context, "tyre", "Change Tyre", null),
-                      CustomListTile(
-                          context, "car_battery", "Jumpstarting", null),
-                      CustomListTile(
-                          context, "headlight", "Change Headlights", null),
-                      CustomListTile(
-                          context, "windshield", "Replace Wipers", null),
-                    ]).toList(),
-                  ),
-                ),
+                tabs: [
+                  for (String e in sections)
+                    Text(
+                      (e.split(" ").take(3)).join(" "),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                ],
+                views: [
+                  for (var i = 0; i < sections.length; i++)
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: MediaQuery.of(context).size.width / 15,
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: ListView(
+                            shrinkWrap: true,
+                            children:
+                                ListTile.divideTiles(context: context, tiles: [
+                              if (Procedures
+                                      .proceduresList[sections.elementAt(i)] !=
+                                  null)
+                                for (var e in Procedures
+                                    .proceduresList[sections.elementAt(i)]!)
+                                  if (e.runtimeType == String)
+                                    CustomListTile(
+                                      context: context,
+                                      icon: e.toString().replaceAll('/', ''),
+                                      text: e.toString(),
+                                      path: 'preview_text_instructions_page',
+                                      // 'text_${e.toString().toLowerCase().replaceAll('/', '').replaceAll(' ', '_')}',
+                                    )
+                                  else
+                                    for (String v in convertToMap(e.toString())
+                                        .values
+                                        .first)
+                                      CustomListTile(
+                                        context: context,
+                                        icon:
+                                            '${convertToMap(e.toString()).keys.first} $v'
+                                                .replaceAll('/', ''),
+                                        text:
+                                            '${convertToMap(e.toString()).keys.first} $v',
+                                        path: 'preview_text_instructions_page',
+                                        // 'text_${convertToMap(e.toString()).keys.first} $v'
+                                        //     .toLowerCase()
+                                        //     .replaceAll('/', '')
+                                        //     .replaceAll(' ', '_'),
+                                      )
+                            ]).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
           ],
@@ -60,27 +124,39 @@ class TextList extends StatelessWidget {
 }
 
 Widget CustomListTile(
-    BuildContext context, String icon, String text, String? path) {
+    {required BuildContext context,
+    required String icon,
+    required String text,
+    required String path}) {
   return Container(
     height: MediaQuery.of(context).size.height / 7,
-    padding: EdgeInsets.only(left: MediaQuery.of(context).size.height / 57),
+    // padding: EdgeInsets.only(left: MediaQuery.of(context).size.height / 57),
     child: ListTile(
+      onTap: () => navigateToPage(path),
       title: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        //TODO: fix overflow
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
         children: [
           ImageIcon(
             AssetImage("assets/icons/$icon.png"),
             color: Colors.black87,
             size: MediaQuery.of(context).size.height / 15,
           ),
-          Padding(
-            padding: EdgeInsets.only(
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(
                 left: MediaQuery.of(context).size.height / 25,
-                right: MediaQuery.of(context).size.height / 25),
-            child: Text(text,
+              ),
+              child: Text(
+                text,
                 style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.height / 25,
-                )),
+                  fontSize: MediaQuery.of(context).size.height / 30,
+                ),
+                softWrap: true,
+                overflow: TextOverflow.fade,
+              ),
+            ),
           ),
         ],
       ),
@@ -95,7 +171,8 @@ Widget CustomListTile(
             onPressed: () {
               if (path == null) {
               } else {
-                Navigator.pushNamed(context, path);
+                // () => navigateToPage('/$path');
+                Navigator.pushNamed(context, '/$path');
               }
             },
             child: Icon(

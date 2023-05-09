@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
             '/preview_text_instructions_page': (context) =>
                 PreviewTextInstructionsPage(),
             '/settings': ((context) => SettingsPage()),
-            '/hand_gesture': ((context) => const GesturePage()),
+            // '/hand_gesture': ((context) => const GesturePage()),
           },
           title: 'ARabeitak',
           debugShowCheckedModeBanner: false,

@@ -20,14 +20,14 @@ class IntroPage extends StatelessWidget {
       showSkipButton: true,
       skip: const Text("Skip"),
       onSkip: (() {
-        // Navigator.pushNamed(context, '/auth/log_in');
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/auth/log_in');
+        // Navigator.pushNamed(context, '/home');
       }),
       next: const Icon(Icons.navigate_next),
       done: const Icon(Icons.check),
       onDone: () {
-        // Navigator.pushNamed(context, '/auth/log_in');
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/auth/log_in');
+        // Navigator.pushNamed(context, '/home');
       },
       dotsDecorator: DotsDecorator(
         size: const Size.square(10.0),
