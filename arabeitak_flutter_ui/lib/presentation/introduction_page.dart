@@ -1,82 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
+// TODO: use shared_preferences to display the screen only once
+
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return IntroductionScreen(
-      globalBackgroundColor: Colors.white,
-      rawPages: [
-        CustomPageView(context, "Welcome to the world of AR car maintenance!"),
-        CustomPageView(context,
-            "Our app leverages the latest in AR technology to provide you with a hands-on, interactive experience when it comes to maintaining your vehicle."),
-        CustomPageView(context,
-            "From diagnosing issues to finding replacement parts, our app makes it easy to take control of your vehicle\'s health.")
-      ],
-      baseBtnStyle: TextButton.styleFrom(
-          backgroundColor: Colors.transparent, foregroundColor: Colors.black87),
-      showSkipButton: true,
-      skip: const Text("Skip"),
-      onSkip: (() {
-        Navigator.pushNamed(context, '/auth/log_in');
-        // Navigator.pushNamed(context, '/home');
-      }),
-      next: const Icon(Icons.navigate_next),
-      done: const Icon(Icons.check),
-      onDone: () {
-        Navigator.pushNamed(context, '/auth/log_in');
-        // Navigator.pushNamed(context, '/home');
-      },
-      dotsDecorator: DotsDecorator(
-        size: const Size.square(10.0),
-        activeSize: const Size(40.0, 10.0),
-        activeColor: Colors.black87,
-        color: Colors.grey.shade300,
-        spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-        activeShape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+    
+    // Introduction screen dots decorator 
+    DotsDecorator dotsDecorator = DotsDecorator(
+      size: const Size.square(10.0),
+      activeSize: const Size(40.0, 10.0),
+      activeColor: Colors.black87,
+      color: Colors.grey.shade300,
+      spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+      activeShape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+    );
+
+    // Introduction screen pages (text only)
+    List<Widget> customPages = [
+      customPageView(context, "Welcome to the world of AR car maintenance!"),
+      customPageView(context,
+          "Our app leverages the latest in AR technology to provide you with a hands-on, interactive experience when it comes to maintaining your vehicle."),
+      customPageView(context,
+          "From diagnosing issues to finding replacement parts, our app makes it easy to take control of your vehicle\'s health.")
+    ];
+
+    // Stack with the car as the background + intro screen as the foreground
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height *0.85,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                alignment: Alignment.bottomRight,
+                image: AssetImage("assets/images/car_right.png"),
+              ),
+            ),
+          ),
+          IntroductionScreen(
+            globalBackgroundColor: Colors.transparent,
+            rawPages: customPages,
+            baseBtnStyle: TextButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                foregroundColor: Colors.black87),
+            showSkipButton: true,
+            skip: const Text("Skip"),
+            onSkip: (() {}),
+            next: const Icon(Icons.navigate_next),
+            done: const Icon(Icons.check),
+            onDone: () {},
+            dotsDecorator: dotsDecorator,
+          ),
+        ],
       ),
     );
   }
 
-  Widget CustomPageView(BuildContext context, String text) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Image(
-            image: const AssetImage("assets/images/car_left.png"),
-            alignment: Alignment.centerLeft,
-            height: MediaQuery.of(context).size.height,
-          ),
-          FittedBox(
-            // padding: const EdgeInsets.all(11.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width / 3,
-              child: Column(
+  Widget customPageView(BuildContext context, String text) {
+    List<Text> textWidgets = [
+      Text("ARabeitak", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+      Text(text, style: Theme.of(context).textTheme.bodyMedium),
+    ];
+    // TODO: create space constraints without padding
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return orientation == Orientation.portrait
+            ? Padding(
+                padding: const EdgeInsets.only(
+                    left: 48.0, right: 48.0, top: 100.0, bottom: 24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("ARabeitak",
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height / 21,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    Text(text,
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height / 27,
-                        )),
-                  ]),
-            ),
-          ),
-          Image(
-            image: const AssetImage("assets/images/car_right.png"),
-            alignment: Alignment.centerRight,
-            height: MediaQuery.of(context).size.height,
-          ),
-        ],
-      ),
+                  children: textWidgets,
+                ),
+              )
+            : Padding(
+                padding: EdgeInsets.only(
+                    left: 64.0, right: MediaQuery.of(context).size.width*0.25, top: 24.0, bottom: 24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: textWidgets,
+                ),
+              );
+      },
     );
   }
 }
