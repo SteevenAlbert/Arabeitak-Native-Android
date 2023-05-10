@@ -16,7 +16,7 @@ buildscript {
 
 subprojects {
     ext.commonCompileSdkVersion = 31
-    ext.commonMinSdkVersion = 23
+    ext.commonMinSdkVersion = 24
     ext.commonTargetSdkVersion = 31
     ext.commonSupportLibVersion = "27.1.0"
     ext.commonNdkVersion = "21.0.6113669"

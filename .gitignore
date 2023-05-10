@@ -14,3 +14,7 @@ plugins/src/main/*
 !plugins/src/main/cpp/
 plugins/src/main/cpp/*
 !plugins/src/main/cpp/src
+app/src/main/.DS_Store
+app/src/.DS_Store
+app/.DS_Store
+.DS_Store
