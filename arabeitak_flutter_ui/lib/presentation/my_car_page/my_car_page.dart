@@ -13,9 +13,12 @@ class MyCarPage extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           children: [
-            Image.network(
-                fit: BoxFit.contain,
-                "https://s3.us-east-2.amazonaws.com/dealer-inspire-vps-vehicle-images/stock-images/chrome/30021bfe494c70240ab3419f034de887.png"),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height*0.3),
+              child: Image.network(
+                  fit: BoxFit.contain,
+                  "https://s3.us-east-2.amazonaws.com/dealer-inspire-vps-vehicle-images/stock-images/chrome/30021bfe494c70240ab3419f034de887.png"),
+            ),
             const CarHeader(),
             const ActionsGrid()
           ],

@@ -19,7 +19,7 @@ class ActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        isFlutterPath ? context.go(path) : navigateToPage(path);
+        isFlutterPath ? context.push(path) : navigateToPage(path);
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -40,7 +40,7 @@ class ActionCard extends StatelessWidget {
               ),
               Text(
                 subtitle,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodySmall,
               )
             ],
           ),

@@ -30,19 +30,27 @@ class ActionsGrid extends StatelessWidget {
 
   List<Widget> initActionsWidgets() {
     List<List> actions = [
-      ['/', "Maintenance Procedures", "Keep it moving", Icons.handyman],
+      [
+        '/maintenance_procedures_page',
+        "Maintenance Procedures",
+        "Keep it moving",
+        Icons.handyman,
+        true
+      ],
       [
         '/',
         "More about my car",
         "Unleash your car's full potential",
-        Icons.info
+        Icons.info,
+        true
       ],
-      ['/', "Remote Assistance", "Call a specialist", Icons.video_call],
+      ['/', "Remote Assistance", "Call a specialist", Icons.video_call, false],
       [
         '/',
         "Can't find your question?",
         "Chat with our AI bot",
-        Icons.chat_bubble_rounded
+        Icons.chat_bubble_rounded,
+        true
       ],
     ];
 
@@ -50,10 +58,12 @@ class ActionsGrid extends StatelessWidget {
 
     for (List item in actions) {
       widgets.add(ActionCard(
-          path: item[0],
-          title: item[1],
-          subtitle: item[2],
-          isFlutterPath: false, iconData: item[3],));
+        path: item[0],
+        title: item[1],
+        subtitle: item[2],
+        iconData: item[3],
+        isFlutterPath: item[4],
+      ));
     }
     return widgets;
   }

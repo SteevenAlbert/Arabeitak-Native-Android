@@ -1,4 +1,5 @@
 import 'package:arabeitak_flutter_ui/router.dart';
+import 'package:arabeitak_flutter_ui/utils/constants.dart';
 import 'package:arabeitak_flutter_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,27 +36,24 @@ class MyApp extends StatelessWidget {
     var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return LocalizationProvider(
-        state: LocalizationProvider.of(context).state,
-        child: MaterialApp.router(
-          routerConfig: MyRouter.router,
-          title: 'ARabeitak',
-          debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.dark,
-          darkTheme: ThemeData.dark().copyWith(
-            primaryColor: Colors.green[400],
-            colorScheme: ColorScheme.fromSwatch(
-                primarySwatch: createMaterialColor(Colors.green[400]!)),
-          ),
-          theme: ThemeData(
-            primarySwatch: createMaterialColor(Colors.green[400]!),
-          ),
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            localizationDelegate
-          ],
-          supportedLocales: localizationDelegate.supportedLocales,
-          locale: localizationDelegate.currentLocale,
-        ));
+      state: LocalizationProvider.of(context).state,
+      child: MaterialApp.router(
+        routerConfig: MyRouter.router,
+        title: 'ARabeitak',
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.dark,
+        darkTheme: kDarkThemeData,
+        theme: ThemeData(
+          primarySwatch: createMaterialColor(kAppPrimaryColor),
+        ),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          localizationDelegate
+        ],
+        supportedLocales: localizationDelegate.supportedLocales,
+        locale: localizationDelegate.currentLocale,
+      ),
+    );
   }
 }
