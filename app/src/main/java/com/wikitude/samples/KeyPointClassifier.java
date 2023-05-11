@@ -7,21 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.Tensor;
 
-import android.content.Context;
 public class KeyPointClassifier {
-    private Interpreter interpreter;
-    private int inputSize;
-    private int outputSize;
-    private ByteBuffer inputBuffer;
-    private ByteBuffer outputBuffer;
+    private final Interpreter interpreter;
+    private final int inputSize;
+    private final int outputSize;
+    private final ByteBuffer inputBuffer;
+    private final ByteBuffer outputBuffer;
 
     public KeyPointClassifier( AssetManager assetManager,String modelPath) throws IOException {
         this.interpreter = new Interpreter(loadModelFile(assetManager,modelPath));

@@ -43,10 +43,10 @@
      public static final String INTENT_EXTRAS_KEY_SAMPLE = "sampleData";
  
      private static final String TAG = ARWikitudeActivity.class.getSimpleName();
-     Float oldx= null;
-     Float oldy= null;
-     Float newx= null;
-     Float newy= null;
+     Float oldX= null;
+     Float oldY= null;
+     Float newX= null;
+     Float newY= null;
      /** Root directory of the sample AR-Experiences in the assets dir. */
      private static final String SAMPLES_ROOT = "samples/";
      /**
@@ -165,30 +165,30 @@
  
      @Override
      public void onScreenCaptured(Bitmap bitmap) {
-         String finall;
+         String direction;
  
          AssetManager assetManager = getAssets();
          HandDetection detect = new HandDetection();
          float[] landmarksList=detect.processBitmap(this, bitmap,assetManager);
          if (landmarksList.length>0) {
-             if (oldx != null && oldy != null) {
-                 newx = landmarksList[0];
-                 newy = landmarksList[1];
-                 Float[] a = {oldx, oldy};
-                 Float[] b = {newx, newy};
+             if (oldX != null && oldY != null) {
+                 newX = landmarksList[0];
+                 newY = landmarksList[1];
+                 Float[] a = {oldX, oldY};
+                 Float[] b = {newX, newY};
                  Float c = a[0] * b[1] - a[1] * b[0];
  
                  if (c > 0) {
-                     finall = "Clockwise";
+                     direction = "Clockwise";
                  } else {
-                     finall = "Anticlockwise";
+                     direction = "Anticlockwise";
                  }
-                 oldx = landmarksList[0];
-                 oldy = landmarksList[1];
-                 Log.v(TAG, "Finally? " + finall);
+                 oldX = landmarksList[0];
+                 oldY = landmarksList[1];
+                 Log.v(TAG, "Direction: " + direction);
              } else {
-                 oldx = landmarksList[0];
-                 oldy = landmarksList[1];
+                 oldX = landmarksList[0];
+                 oldY = landmarksList[1];
              }
          }
  
