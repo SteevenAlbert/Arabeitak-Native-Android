@@ -1,3 +1,4 @@
+import 'package:arabeitak_flutter_ui/presentation/all_cars_page/all_cars_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/ar_list.dart';
 import 'package:arabeitak_flutter_ui/presentation/home_page/home_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/introduction_page/introduction_page.dart';
@@ -34,6 +35,12 @@ class MyRouter {
             path: 'maintenance_procedures_page',
             builder: (BuildContext context, GoRouterState state) {
               return const MaintenaceProceduresPage();
+            },
+          ),
+          GoRoute(
+            path: 'all_cars_page',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AllCarsPage();
             },
           ),
 

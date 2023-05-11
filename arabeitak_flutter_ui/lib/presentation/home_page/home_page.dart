@@ -2,6 +2,7 @@ import 'package:arabeitak_flutter_ui/presentation/home_page/car_card.dart';
 import 'package:arabeitak_flutter_ui/presentation/home_page/header.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,8 +18,10 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+        onPressed: () {
+          context.go('/all_cars_page');
+        },
+        child: const Icon(Icons.add),
       ),
       body: SafeArea(
         child: Column(

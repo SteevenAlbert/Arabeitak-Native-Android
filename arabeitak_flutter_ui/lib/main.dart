@@ -1,6 +1,5 @@
 import 'package:arabeitak_flutter_ui/router.dart';
 import 'package:arabeitak_flutter_ui/utils/constants.dart';
-import 'package:arabeitak_flutter_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,7 +20,7 @@ void main() async {
       fallbackLocale: 'en',
       supportedLocales: [
         'en',
-        'ar',
+        'ar',    
       ]);
 
   runApp(LocalizedApp(delegate, const MyApp()));
@@ -41,11 +40,9 @@ class MyApp extends StatelessWidget {
         routerConfig: MyRouter.router,
         title: 'ARabeitak',
         debugShowCheckedModeBanner: false,
-        themeMode: ThemeMode.dark,
+        themeMode: ThemeMode.light,
         darkTheme: kDarkThemeData,
-        theme: ThemeData(
-          primarySwatch: createMaterialColor(kAppPrimaryColor),
-        ),
+        theme: kLightThemeData,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
