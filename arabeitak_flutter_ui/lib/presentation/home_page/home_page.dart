@@ -8,8 +8,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SwiperPagination swiperPagination = SwiperPagination(
+        builder: DotSwiperPaginationBuilder(
+            color: Theme.of(context).disabledColor,
+            activeColor: Theme.of(context).primaryColor,
+            activeSize: 12,
+            space: 4));
+
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){}, child: Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -24,44 +34,35 @@ class HomePage extends StatelessWidget {
                 itemWidth: MediaQuery.of(context).size.width,
                 itemHeight: MediaQuery.of(context).size.height,
                 layout: SwiperLayout.DEFAULT,
-                pagination: const SwiperPagination(
-                    builder: DotSwiperPaginationBuilder(
-                        color: Colors.grey,
-                        activeColor: Colors.black,
-                        activeSize: 8,
-                        space: 4)),
+                pagination: swiperPagination,
                 itemBuilder: (context, index) {
                   return Stack(
                     children: [
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.1,
-                          ),
-                          CarCard(
-                            name: "$index",
-                          ),
-                        ],
+                      CarCard(
+                        name: "$index",
                       ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.7),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Image.network(
-                                "https://s3.us-east-2.amazonaws.com/dealer-inspire-vps-vehicle-images/stock-images/chrome/30021bfe494c70240ab3419f034de887.png"),
-                          ),
-                        ),
-                      )
+                      addCarImage(context),
                     ],
                   );
                 },
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget addCarImage(BuildContext context) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: ConstrainedBox(
+        constraints:
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Image.network(
+              "https://s3.us-east-2.amazonaws.com/dealer-inspire-vps-vehicle-images/stock-images/chrome/30021bfe494c70240ab3419f034de887.png"),
         ),
       ),
     );

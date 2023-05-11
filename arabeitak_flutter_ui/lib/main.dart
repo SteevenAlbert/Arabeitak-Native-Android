@@ -1,9 +1,9 @@
 import 'package:arabeitak_flutter_ui/router.dart';
+import 'package:arabeitak_flutter_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 const platform = MethodChannel('flutter.native/helper');
 Future<void> navigateToPage(String pageName) async {
@@ -40,10 +40,14 @@ class MyApp extends StatelessWidget {
           routerConfig: MyRouter.router,
           title: 'ARabeitak',
           debugShowCheckedModeBanner: false,
+          themeMode: ThemeMode.dark,
+          darkTheme: ThemeData.dark().copyWith(
+            primaryColor: Colors.green[400],
+            colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: createMaterialColor(Colors.green[400]!)),
+          ),
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch()
-                .copyWith(primary: const Color(0xFF111111)),
-            fontFamily: GoogleFonts.montserrat().fontFamily,
+            primarySwatch: createMaterialColor(Colors.green[400]!),
           ),
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,

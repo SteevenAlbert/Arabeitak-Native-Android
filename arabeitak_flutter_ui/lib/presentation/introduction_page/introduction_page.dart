@@ -4,8 +4,8 @@ import 'package:introduction_screen/introduction_screen.dart';
 
 // TODO: use shared_preferences to display the screen only once
 
-class IntroPage extends StatelessWidget {
-  const IntroPage({super.key});
+class IntroductionPage extends StatelessWidget {
+  const IntroductionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,8 @@ class IntroPage extends StatelessWidget {
     DotsDecorator dotsDecorator = DotsDecorator(
       size: const Size.square(10.0),
       activeSize: const Size(40.0, 10.0),
-      activeColor: Colors.black87,
-      color: Colors.grey.shade300,
+      activeColor: Theme.of(context).primaryColor,
+      color: Theme.of(context).disabledColor,
       spacing: const EdgeInsets.symmetric(horizontal: 3.0),
       activeShape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
@@ -32,17 +32,21 @@ class IntroPage extends StatelessWidget {
 
     // Stack with the car as the background + intro screen as the foreground
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height *0.85,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fitHeight,
-                alignment: Alignment.bottomRight,
-                image: AssetImage("assets/images/car_right.png"),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width *0.8, maxHeight: MediaQuery.of(context).size.height *0.85,),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height *0.1),
+              child: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomRight,
+                    image: AssetImage("assets/images/white_front_corolla_right.png"),
+                  ),
+                ),
               ),
             ),
           ),
@@ -51,7 +55,7 @@ class IntroPage extends StatelessWidget {
             rawPages: customPages,
             baseBtnStyle: TextButton.styleFrom(
                 backgroundColor: Colors.transparent,
-                foregroundColor: Colors.black87),
+                foregroundColor: Theme.of(context).primaryColor),
             showSkipButton: true,
             skip: const Text("Skip"),
             onSkip: (() {context.go('/home_page');}),

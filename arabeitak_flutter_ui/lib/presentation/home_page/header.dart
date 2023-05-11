@@ -8,14 +8,14 @@ class Header extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        trailing: CircleAvatar(backgroundColor: Colors.grey[300],),
+        trailing: CircleAvatar(backgroundColor: Theme.of(context).cardColor,),
         title: Text(
           "Hello Jared,",
           style: Theme.of(context).textTheme.titleMedium,
           textAlign: TextAlign.left,
         ),
         subtitle: Text(
-          "Which car our we treating today?",
+          "Which car are we treating today?",
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
