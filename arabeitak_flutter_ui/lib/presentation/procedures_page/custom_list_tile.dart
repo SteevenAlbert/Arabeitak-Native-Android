@@ -1,5 +1,5 @@
-import 'package:arabeitak_flutter_ui/main.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomListTile extends StatelessWidget {
   final String text, icon, path;
@@ -9,7 +9,7 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => navigateToPage(path),
+      onTap: () => context.go('/instructions_page'),
       leading: ImageIcon(
         AssetImage("assets/icons/$icon.png"),
       ),
