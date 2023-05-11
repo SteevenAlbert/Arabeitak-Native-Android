@@ -43,9 +43,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             colorScheme: ColorScheme.fromSwatch()
                 .copyWith(primary: const Color(0xFF111111)),
-            fontFamily: GoogleFonts.openSans(
-              fontSize: 15,
-            ).fontFamily,
+            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,

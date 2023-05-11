@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 // TODO: use shared_preferences to display the screen only once
@@ -53,10 +54,10 @@ class IntroPage extends StatelessWidget {
                 foregroundColor: Colors.black87),
             showSkipButton: true,
             skip: const Text("Skip"),
-            onSkip: (() {}),
+            onSkip: (() {context.go('/home_page');}),
             next: const Icon(Icons.navigate_next),
             done: const Icon(Icons.check),
-            onDone: () {},
+            onDone: () {context.go('/home_page');},
             dotsDecorator: dotsDecorator,
           ),
         ],
