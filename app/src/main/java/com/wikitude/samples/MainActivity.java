@@ -73,13 +73,13 @@ public class MainActivity extends AppCompatActivity  {
                 startActivity(intent);
             }
         });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HandDetectionActivity.class);
-                startActivity(intent);
-            }
-        });
+        // button2.setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         Intent intent = new Intent(MainActivity.this, HandDetectionActivity.class);
+        //         startActivity(intent);
+        //     }
+        // });
         // Cache the FlutterEngine to be used by FlutterActivity.
         FlutterEngineCache
                 .getInstance()

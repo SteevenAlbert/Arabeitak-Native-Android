@@ -5,4 +5,17 @@
 .gradle
 /build
 java_pid18792.hprof
+!plugins/
+plugins/*
+!plugins/src/
+plugins/src/*
+!plugins/src/main/
+plugins/src/main/*
+!plugins/src/main/cpp/
+plugins/src/main/cpp/*
+!plugins/src/main/cpp/src
+app/src/main/.DS_Store
+app/src/.DS_Store
+app/.DS_Store
+.DS_Store
 /app/build

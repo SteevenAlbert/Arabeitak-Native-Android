@@ -4,6 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:google_fonts/google_fonts.dart';
+// /import 'package:firebase_core/firebase_core.dart';
+// import 'presentation/Intro_page.dart';
+import 'presentation/introduction_page.dart';
+// import 'presentation/auth/login.dart';
+import 'presentation/auth/log_in.dart';
+import 'presentation/auth/sign_up.dart';
+// import 'presentation/homepage.dart';
+import 'presentation/home_page.dart';
+import 'presentation/owned_cars.dart';
+import 'presentation/select_car_model_page.dart';
+import 'presentation/choices.dart';
+import 'presentation/ar_list.dart';
+import 'presentation/text_list.dart';
+import 'presentation/preview_text_instructions_page.dart';
+import 'presentation/settings.dart';
 
 const platform = MethodChannel('flutter.native/helper');
 Future<void> navigateToPage(String pageName) async {
@@ -20,7 +36,7 @@ void main() async {
       fallbackLocale: 'en',
       supportedLocales: [
         'en',
-        'ar',    
+        'ar',
       ]);
 
   runApp(LocalizedApp(delegate, const MyApp()));
