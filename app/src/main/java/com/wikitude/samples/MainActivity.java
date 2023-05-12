@@ -91,24 +91,33 @@ public class MainActivity extends AppCompatActivity  {
         );
     }
     private void navigateToPage(String pageName) {
-        if(pageName.equals("/ar/coolant")){
-            Log.d(TAG, "navigateToPage: " + pageName);
-            Intent intent = new Intent(MainActivity.this, ARWikitudeActivity.class);
-            intent.putExtra("procedure", "add_coolant");
-            startActivity(intent);
-        }else if(pageName.equals("/ar/change_tyre")){
-            Log.d(TAG, "navigateToPage: " + pageName);
-            Intent intent = new Intent(MainActivity.this, ARWikitudeActivity.class);
-            intent.putExtra("procedure", "change_tyres");
-            startActivity(intent);
-        }else if(pageName.equals("/remote_assistance")){
-            Log.d(TAG, "navigateToPage: " + pageName);
-            Intent intent = new Intent(MainActivity.this, CallIntroActivity.class);
-            startActivity(intent);
-        }else{
-            Log.d(TAG, "Route not found! route: " + pageName);
+        Intent intent = new Intent(MainActivity.this, ARWikitudeActivity.class);
+        switch (pageName) {
+            case "/ar/coolant":
+                intent.putExtra("procedure", "add_coolant");
+                startActivity(intent);
+                break;
+            case "/ar/change_tyre":
+                intent.putExtra("procedure", "change_tyres");
+                startActivity(intent);
+                break;
+            case "/ar/jumpstart_battery":
+                intent.putExtra("procedure", "jumpstart_battery");
+                startActivity(intent);
+                break;
+            case "/ar/ar_demo":
+                Log.d(TAG, "navigateToPage: AR DEMO");
+                intent.putExtra("procedure", "ar_demo");
+                startActivity(intent);
+                break;
+            case "/remote_assistance":
+                Log.d(TAG, "navigateToPage: AR DEMO");
+                intent = new Intent(MainActivity.this, CallIntroActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                Log.d(TAG, "Route not found! route: " + pageName);
+                break;
         }
-
-
     }
 }

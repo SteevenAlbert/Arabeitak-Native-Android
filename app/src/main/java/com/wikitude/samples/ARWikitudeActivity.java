@@ -87,14 +87,6 @@
          super.onCreate(savedInstanceState);
          // Used to enabled remote debugging of the ArExperience with google chrome https://developers.google.com/web/tools/chrome-devtools/remote-debugging
          WebView.setWebContentsDebuggingEnabled(true);
- 
-         /*
-          * The ArchitectStartupConfiguration is required to call architectView.onCreate.
-          * It controls the startup of the ArchitectView which includes camera settings,
-          * the required device features to run the ArchitectView and the LicenseKey which
-          * has to be set to enable an AR-Experience.
-          */
- 
          final ArchitectStartupConfiguration config = new ArchitectStartupConfiguration(); // Creates a config with its default values.
          config.setLicenseKey(getString(R.string.wikitude_license_key)); // Has to be set, to get a trial license key visit http://www.wikitude.com/developer/licenses.
          config.setCameraPosition(CameraSettings.CameraPosition.BACK);       // The default camera is the first camera available for the system.
@@ -114,7 +106,6 @@
                  architectView.captureScreen(ArchitectView.CaptureScreenCallback.CAPTURE_MODE_CAM, ARWikitudeActivity.this);
              }
          }, 0, 2000);
-
      }
  
      @Override
@@ -123,6 +114,30 @@
          architectView.onPostCreate();
          Intent intent = getIntent();
          String procedure = intent.getStringExtra("procedure");
+
+         try {
+             switch (procedure) {
+                 case "change_tyres":
+                     architectView.load("scenarios/change_tyres/index.html");
+                     break;
+                 case "add_coolant":
+                     architectView.load("scenarios/add_coolant/index.html");
+                     break;
+                 case "jumpstart_battery":
+                     architectView.load("scenarios/jumpstart_battery/index.html");
+                     break;
+                 case "ar_demo":
+                     architectView.load("scenarios/ar_demo/index.html");
+                     break;
+                 default:
+                     architectView.load("scenarios/null/index.html");
+                     break;
+             }
+         } catch (IOException e) {
+             Toast.makeText(this, getString(R.string.error_loading_ar_experience), Toast.LENGTH_SHORT).show();
+             Log.e(TAG, "Exception while loading arExperience " + arExperience + ".", e);
+         }
+
          runOnUiThread(new Runnable() {
              @Override
              public void run() {
@@ -160,32 +175,8 @@
                  rootView.addView(textView);
              }
          });
-         //Register Native Plugins Here
- //        FaceDetectionPluginExtension plugin2 = new FaceDetectionPluginExtension(this, architectView);
- //        plugin2.onPostCreate();
- //
- //        QrPluginExtension plugin3 = new QrPluginExtension(this, architectView);
- //        plugin3.onPostCreate();
- //        SimpleInputPluginExtension plugin3 = new SimpleInputPluginExtension(this, architectView);
- //        plugin3.onPostCreate();
- //        CustomCameraExtension plugin = new CustomCameraExtension(this, architectView);
- //        plugin.onPostCreate();
-
- 
-//         try {
-//             if(procedure.equals("change_tyres")){
-//                 architectView.load("samples/change_tyres/index.html");
-//             }else if(procedure.equals("add_coolant")){
-//                 architectView.load("samples/add_coolant/index.html");
-//             }else{
-//                 architectView.load("samples/null/index.html");
-//             }
-//         } catch (IOException e) {
-//             Toast.makeText(this, getString(R.string.error_loading_ar_experience), Toast.LENGTH_SHORT).show();
-//             Log.e(TAG, "Exception while loading arExperience " + arExperience + ".", e);
-//         }
      }
- 
+
      @Override
      protected void onResume() {
          super.onResume();

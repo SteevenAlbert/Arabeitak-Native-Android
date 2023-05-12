@@ -29,7 +29,7 @@ class InstructionsPage extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        navigateToPage('/ar/change_tyre');
+                        navigateToPage('/ar/ar_demo');
                       },
                       style: ElevatedButton.styleFrom(
                             side: BorderSide(color:  Theme.of(context).primaryColor),

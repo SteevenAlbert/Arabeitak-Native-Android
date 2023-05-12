@@ -5,7 +5,8 @@ packages:
     dependency: transitive
     description:
       name: archive
-      url: "https://pub.dartlang.org"
+      sha256: "0c8368c9b3f0abbc193b9d6133649a614204b528982bebc7026372d61677ce3a"
+      url: "https://pub.dev"
     source: hosted
     version: "3.3.7"
   async:
@@ -60,7 +61,8 @@ packages:
     dependency: "direct main"
     description:
       name: chat_bubbles
-      url: "https://pub.dartlang.org"
+      sha256: "63703c22ba2e1938e17a396d0e1fdd368f935795c2d7779133a9dae786a3311a"
+      url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
   clock:
@@ -99,7 +101,8 @@ packages:
     dependency: transitive
     description:
       name: convert
-      url: "https://pub.dartlang.org"
+      sha256: "0f08b14755d163f6e2134cb58222dd25ea2a2ee8a195e53983d57c075324d592"
+      url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
   crypto:
@@ -130,7 +133,8 @@ packages:
     dependency: transitive
     description:
       name: dio
-      url: "https://pub.dartlang.org"
+      sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
+      url: "https://pub.dev"
     source: hosted
     version: "4.0.6"
   dots_indicator:
@@ -277,7 +281,8 @@ packages:
     dependency: "direct main"
     description:
       name: jumping_dot
-      url: "https://pub.dartlang.org"
+      sha256: a2f755140da73d018bf5198acd83cdd2898a393e5ea45ee94250b9ba44566d1c
+      url: "https://pub.dev"
     source: hosted
     version: "0.0.6"
   lints:
@@ -396,7 +401,8 @@ packages:
     dependency: transitive
     description:
       name: pointycastle
-      url: "https://pub.dartlang.org"
+      sha256: "7c1e5f0d23c9016c5bbd8b1473d0d3fb3fc851b876046039509e18e0c7485f2c"
+      url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
   process:
@@ -411,7 +417,8 @@ packages:
     dependency: "direct main"
     description:
       name: python_shell
-      url: "https://pub.dartlang.org"
+      sha256: "9698676e78570cfe41a8eb191dc5deb2a8665dc406155546edc079fcce058037"
+      url: "https://pub.dev"
     source: hosted
     version: "0.0.7"
   quiver:

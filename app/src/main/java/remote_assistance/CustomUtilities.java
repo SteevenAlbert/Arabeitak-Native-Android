@@ -22,16 +22,16 @@ public final class CustomUtilities {
             };
     public static final int PERMISSION_REQUEST_CODE = 0X0001;
 
-    //********** AGORA CONFIGURATIONS ***********//
+    //**** AGORA CONFIGURATIONS *****//
     // Fill the App ID of your project generated on Agora Console.
-    public static final String appId = "";
+    public static final String appId = "969fe33fd25d43c591edd703053e5be3";
     // Fill the channel name.
-    public static final String channelName = "";
+    public static final String channelName = "technical1205";
     // Fill the temp token generated on Agora Console.
-    public static final String token = "";
+    public static final String token = "007eJxTYJj/r0S8wPlQyfmW64ea6xzynfZ+2e1o2eJxTd7mXlRy4icFBkszy7RUY+O0FCPTFBPjZFNLw9SUFHMDYwNT41TTpFTjjTVxKQ2BjAwpPgsYGRkgEMTnZShJTc7Iy0xOzDE0MjBlYAAA58sjMw==";
     // An integer that identifies the local user.
     public static final int uid = 0;
-    //********** ENDS HERE ***********//
+    //**** ENDS HERE *****//
 
     //********** UTILITY METHODS **********//
     public static boolean checkSelfPermission(AppCompatActivity appCompatActivity)
