@@ -44,7 +44,7 @@ class ActionsGrid extends StatelessWidget {
         Icons.info,
         true
       ],
-      ['/', "Remote Assistance", "Call a specialist", Icons.video_call, false],
+      ['/remote_assistance', "Remote Assistance", "Call a specialist", Icons.video_call, false],
       [
         '/chat',
         "Can't find your question?",

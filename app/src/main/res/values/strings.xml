@@ -70,4 +70,17 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!--    REMOTE ASSISTANCE-->
+    <string name="icon">Icon</string>
+    <string name="toggle_camera">toggle camera</string>
+    <string name="switch_camera">switch camera</string>
+    <string name="end_call">end call</string>
+    <string name="mute">mute</string>
+    <string name="add">add</string>
+    <string name="logo">logo</string>
+    <string name="show_point_cloud">show point cloud</string>
+    <string name="join">Join</string>
+    <string name="request_assistance">Request assistance</string>
+    <string name="provide_assistance">Provide Assistance</string>
 </resources>

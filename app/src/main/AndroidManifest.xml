@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wikitude.samples" >
 
@@ -11,6 +10,16 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- The Agora SDK requires Bluetooth permissions in case users are using Bluetooth devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH" /> <!-- For Android 12 and above devices, the following permission is also required. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!--Limits app visibility in the Google Play Store to ARCore supported devices
+     (https://developers.google.com/ar/devices).-->
+    <uses-feature android:name="android.hardware.camera.ar" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -48,6 +57,15 @@
             android:name=".HandDetectionActivity"
             android:exported="false" />
         <activity
+            android:name="remote_assistance.CallIntroActivity"
+            android:exported="false" />
+        <activity
+            android:name="remote_assistance.AssistantActivity"
+            android:exported="false" />
+        <activity
+            android:name="remote_assistance.ClientActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" >
             <intent-filter>
@@ -77,7 +95,7 @@
 
         <meta-data
             android:name="com.google.ar.core"
-            android:value="optional" />
+            android:value="required" />
     </application>
 
 </manifest>
