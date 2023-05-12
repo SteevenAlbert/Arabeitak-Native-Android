@@ -16,19 +16,32 @@
  import android.content.Intent;
  import android.content.res.AssetManager;
  import android.graphics.Bitmap;
+ import android.graphics.PorterDuff;
+ import android.graphics.drawable.Drawable;
+ import android.graphics.drawable.GradientDrawable;
  import android.os.Bundle;
  
  import androidx.annotation.Nullable;
  import androidx.appcompat.app.AppCompatActivity;
  import android.util.Log;
+ import android.view.View;
  import android.view.WindowManager;
  import android.webkit.WebView;
+ import android.widget.ImageView;
+ import android.widget.LinearLayout;
  import android.widget.Toast;
- 
+ import android.view.View;
+
  import java.io.IOException;
  import java.util.Timer;
  import java.util.TimerTask;
- import java.util.logging.Handler;
+ import android.graphics.Color;
+ import android.util.TypedValue;
+ import android.view.Gravity;
+ import android.widget.FrameLayout;
+ import android.widget.TextView;
+ import android.os.Handler;
+
  import com.wikitude.samples.advanced.plugins.FaceDetectionPluginExtension;
  import com.wikitude.samples.advanced.plugins.QrPluginExtension;
  /**
@@ -64,7 +77,8 @@
       * Those methods are preferably called in the corresponding Activity lifecycle callbacks.
       */
      protected ArchitectView architectView;
- 
+     private TextView directionTextView;
+     private Handler handler;
      /** The path to the AR-Experience. This is usually the path to its index.html. */
      private String arExperience;
      private Timer timer;
@@ -90,17 +104,17 @@
  
          architectView = new ArchitectView(this);
          architectView.onCreate(config); // create ArchitectView with configuration
- 
+         handler = new Handler();
          setContentView(architectView);
          getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
          timer = new Timer();
          timer.scheduleAtFixedRate(new TimerTask() {
              @Override
              public void run() {
-                 // Capture the screen
                  architectView.captureScreen(ArchitectView.CaptureScreenCallback.CAPTURE_MODE_CAM, ARWikitudeActivity.this);
              }
          }, 0, 2000);
+
      }
  
      @Override
@@ -109,6 +123,43 @@
          architectView.onPostCreate();
          Intent intent = getIntent();
          String procedure = intent.getStringExtra("procedure");
+         runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+                 removeDirectionText();
+                 TextView textView = new TextView(ARWikitudeActivity.this);
+                 textView.setText(" Adjust the camera directly above your hand to monitor your hand gesture. ");
+                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                 textView.setTextColor(Color.BLACK);
+                 textView.setTag("instruction_text");
+
+                 Drawable icon = getResources().getDrawable(R.drawable.hand_front_right);
+                 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+                 icon.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+                 textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
+                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                         FrameLayout.LayoutParams.WRAP_CONTENT,
+                         FrameLayout.LayoutParams.WRAP_CONTENT);
+                 layoutParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                 layoutParams.topMargin = (int) getResources().getDimension(R.dimen.top_margin);
+                 textView.setLayoutParams(layoutParams);
+
+                 GradientDrawable drawable = new GradientDrawable();
+                 drawable.setShape(GradientDrawable.RECTANGLE);
+                 drawable.setColor(Color.parseColor("#BBBBBB"));
+                 drawable.setCornerRadius(20);
+                 textView.setBackgroundDrawable(drawable);
+
+
+                 int padding = (int) getResources().getDimension(R.dimen.padding);
+                 textView.setPadding(padding, padding, padding, padding);
+
+
+                 FrameLayout rootView = findViewById(android.R.id.content);
+                 rootView.addView(textView);
+             }
+         });
          //Register Native Plugins Here
  //        FaceDetectionPluginExtension plugin2 = new FaceDetectionPluginExtension(this, architectView);
  //        plugin2.onPostCreate();
@@ -119,20 +170,20 @@
  //        plugin3.onPostCreate();
  //        CustomCameraExtension plugin = new CustomCameraExtension(this, architectView);
  //        plugin.onPostCreate();
+
  
- 
-         try {
-             if(procedure.equals("change_tyres")){
-                 architectView.load("samples/change_tyres/index.html");
-             }else if(procedure.equals("add_coolant")){
-                 architectView.load("samples/add_coolant/index.html");
-             }else{
-                 architectView.load("samples/null/index.html");
-             }
-         } catch (IOException e) {
-             Toast.makeText(this, getString(R.string.error_loading_ar_experience), Toast.LENGTH_SHORT).show();
-             Log.e(TAG, "Exception while loading arExperience " + arExperience + ".", e);
-         }
+//         try {
+//             if(procedure.equals("change_tyres")){
+//                 architectView.load("samples/change_tyres/index.html");
+//             }else if(procedure.equals("add_coolant")){
+//                 architectView.load("samples/add_coolant/index.html");
+//             }else{
+//                 architectView.load("samples/null/index.html");
+//             }
+//         } catch (IOException e) {
+//             Toast.makeText(this, getString(R.string.error_loading_ar_experience), Toast.LENGTH_SHORT).show();
+//             Log.e(TAG, "Exception while loading arExperience " + arExperience + ".", e);
+//         }
      }
  
      @Override
@@ -165,36 +216,182 @@
  
      @Override
      public void onScreenCaptured(Bitmap bitmap) {
+         //TODO: Needs Multithreading to avoid lagging
          String direction;
- 
          AssetManager assetManager = getAssets();
          HandDetection detect = new HandDetection();
-         float[] landmarksList=detect.processBitmap(this, bitmap,assetManager);
-         if (landmarksList.length>0) {
-             if (oldX != null && oldY != null) {
-                 newX = landmarksList[0];
-                 newY = landmarksList[1];
-                 Float[] a = {oldX, oldY};
-                 Float[] b = {newX, newY};
-                 Float c = a[0] * b[1] - a[1] * b[0];
- 
-                 if (c > 0) {
-                     direction = "Clockwise";
+         float[] landmarksList=detect.processBitmap(this, bitmap);
+         int classification=detect.classifyGesture(landmarksList,assetManager);
+
+         //Opening cap rotation processing
+         if(classification==5 ){
+             if (landmarksList.length>0) {
+                 if (oldX != null && oldY != null) {
+                     newX = landmarksList[0];
+                     newY = landmarksList[1];
+                     Float[] a = {oldX, oldY};
+                     Float[] b = {newX, newY};
+                     Float c = a[0] * b[1] - a[1] * b[0];
+
+                     if (c > 0) {
+                         direction = "Clockwise";
+                         runOnUiThread(new Runnable() {
+                             @Override
+                             public void run() {
+
+                                 removeDirectionText();
+
+
+                                 TextView textView = new TextView(ARWikitudeActivity.this);
+                                 textView.setText(" Rotate the cap in the other direction");
+                                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+                                 textView.setTextColor(Color.BLACK);
+                                 textView.setTag("direction_text");
+
+                                 Drawable icon = getResources().getDrawable(R.drawable.alert);
+                                 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+                                 icon.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+                                 textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
+                                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                                         FrameLayout.LayoutParams.WRAP_CONTENT,
+                                         FrameLayout.LayoutParams.WRAP_CONTENT);
+                                 layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                                 layoutParams.bottomMargin = (int) getResources().getDimension(R.dimen.margin_bottom);
+
+                                 textView.setLayoutParams(layoutParams);
+
+
+                                 GradientDrawable drawable = new GradientDrawable();
+                                 drawable.setShape(GradientDrawable.RECTANGLE);
+                                 drawable.setColor(Color.parseColor("#99BBBBBB")); // grey with alpha
+                                 drawable.setCornerRadius(20);
+                                 textView.setBackgroundDrawable(drawable);
+
+
+                                 int padding = (int) getResources().getDimension(R.dimen.padding);
+                                 textView.setPadding(padding, padding, padding, padding);
+
+
+                                 FrameLayout rootView = findViewById(android.R.id.content);
+                                 rootView.addView(textView);
+                             }
+                         });
+                     } else {
+                         direction = "Anticlockwise";
+                         runOnUiThread(new Runnable() {
+                             @Override
+                             public void run() {
+
+                                 removeDirectionText();
+
+
+                                 TextView textView = new TextView(ARWikitudeActivity.this);
+                                 textView.setText("Continue rotating the cap");
+                                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+                                 textView.setTextColor(Color.BLACK);
+                                 textView.setTag("direction_text"); // Add a tag to identify the TextView
+
+
+                                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                                         FrameLayout.LayoutParams.WRAP_CONTENT,
+                                         FrameLayout.LayoutParams.WRAP_CONTENT);
+                                 layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                                 layoutParams.bottomMargin = (int) getResources().getDimension(R.dimen.margin_bottom);
+
+                                 textView.setLayoutParams(layoutParams);
+
+
+                                 GradientDrawable drawable = new GradientDrawable();
+                                 drawable.setShape(GradientDrawable.RECTANGLE);
+                                 drawable.setColor(Color.parseColor("#99BBBBBB"));
+                                 drawable.setCornerRadius(20);
+                                 textView.setBackgroundDrawable(drawable);
+
+
+                                 int padding = (int) getResources().getDimension(R.dimen.padding);
+                                 textView.setPadding(padding, padding, padding, padding);
+
+
+                                 FrameLayout rootView = findViewById(android.R.id.content);
+                                 rootView.addView(textView);
+                             }
+                         });
+
+
+                     }
+                     oldX = landmarksList[0];
+                     oldY = landmarksList[1];
+                     Log.v(TAG, "Direction: " + direction);
                  } else {
-                     direction = "Anticlockwise";
+                     oldX = landmarksList[0];
+                     oldY = landmarksList[1];
                  }
-                 oldX = landmarksList[0];
-                 oldY = landmarksList[1];
-                 Log.v(TAG, "Direction: " + direction);
-             } else {
-                 oldX = landmarksList[0];
-                 oldY = landmarksList[1];
              }
+         }//Next Instruction
+         else if (classification==0){
+             runOnUiThread(new Runnable() {
+                 @Override
+                 public void run() {
+
+                     removeDirectionText();
+                     removeInstructionText();
+
+                     TextView textView = new TextView(ARWikitudeActivity.this);
+                     textView.setText(" Next Instruction");
+                     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+                     textView.setTextColor(Color.BLACK);
+                     textView.setTag("direction_text");
+
+                     Drawable icon = getResources().getDrawable(R.drawable.check_all);
+                     icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+                     icon.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+                     textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
+                     FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                             FrameLayout.LayoutParams.WRAP_CONTENT,
+                             FrameLayout.LayoutParams.WRAP_CONTENT);
+                     layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                     layoutParams.bottomMargin = (int) getResources().getDimension(R.dimen.margin_bottom);
+
+                     textView.setLayoutParams(layoutParams);
+
+
+                     GradientDrawable drawable = new GradientDrawable();
+                     drawable.setShape(GradientDrawable.RECTANGLE);
+                     drawable.setColor(Color.parseColor("#99BBBBBB"));
+                     drawable.setCornerRadius(20);
+                     textView.setBackgroundDrawable(drawable);
+
+
+                     int padding = (int) getResources().getDimension(R.dimen.padding);
+                     textView.setPadding(padding, padding, padding, padding);
+
+
+                     FrameLayout rootView = findViewById(android.R.id.content);
+                     rootView.addView(textView);
+                 }
+             });
+             timer.cancel();
+             Log.v(TAG,"Proceed with the next instruction");
          }
- 
- 
-         architectView.captureScreen(ArchitectView.CaptureScreenCallback.CAPTURE_MODE_CAM, this);
      }
+
+     private void removeDirectionText() {
+         FrameLayout rootView = findViewById(android.R.id.content);
+         TextView directionTextView = rootView.findViewWithTag("direction_text");
+         if (directionTextView != null) {
+             rootView.removeView(directionTextView);
+         }
+     }
+     private void removeInstructionText() {
+         FrameLayout rootView = findViewById(android.R.id.content);
+         TextView directionTextView = rootView.findViewWithTag("instruction_text");
+         if (directionTextView != null) {
+             rootView.removeView(directionTextView);
+         }
+     }
+
  }
  
  

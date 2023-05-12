@@ -39,7 +39,7 @@ public class HandDetection{
     private HandLandmarker handLandmarker;
     private HandLandmarkerResult result;
     private List<List<Landmark>> landmarksList;
-    public float[] processBitmap(Context context, Bitmap bitmap, AssetManager assetManager) {
+    public float[] processBitmap(Context context, Bitmap bitmap) {
         Bitmap newBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         bitmap.recycle();
         bitmap = newBitmap;
@@ -76,18 +76,30 @@ public class HandDetection{
         for (int i = 0; i < landmarksfloatList.size(); i++) {
             floatArray[i] = landmarksfloatList.get(i);
         }
-        if(floatArray.length>0){
-            try {
-                KeyPointClassifier model = new KeyPointClassifier(assetManager, "keypoint_classifier.tflite");
-                Log.v(TAG,"Gesture Classification: "+model.predict(floatArray));
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
 
-        }
         return floatArray;
 
 
     }
+    public int classifyGesture(float[] floatArray, AssetManager assetManager) {
+    if(floatArray.length>0){
+        try {
+            KeyPointClassifier model = new KeyPointClassifier(assetManager, "keypoint_classifier.tflite");
+            int classification =model.predict(floatArray);
+            if (classification==0){
+                Log.v(TAG,"Gesture Classification: Next Instruction");
+            }
+            else if(classification==5){
+                Log.v(TAG,"Gesture Classification: Opening cap");
+            }
+            return classification;
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    return 10;
+    }
 
 }
+
