@@ -1,3 +1,4 @@
+import 'package:arabeitak_flutter_ui/main.dart';
 import 'package:arabeitak_flutter_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,9 @@ class InstructionsPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        navigateToPage('/ar/change_tyre');
+                      },
                       style: ElevatedButton.styleFrom(
                             side: BorderSide(color:  Theme.of(context).primaryColor),
                             shape: const StadiumBorder()),

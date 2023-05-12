@@ -17,5 +17,5 @@ ThemeData kDarkThemeData = ThemeData.dark().copyWith(
 
 ThemeData kLightThemeData = ThemeData(
   primarySwatch: createMaterialColor(kAppPrimaryColor),
-  cardTheme: CardTheme(color: Colors.grey[200],),
+  cardTheme: CardTheme(color: Colors.grey[100],),
 );

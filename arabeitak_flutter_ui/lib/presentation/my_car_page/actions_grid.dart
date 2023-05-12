@@ -38,7 +38,7 @@ class ActionsGrid extends StatelessWidget {
         true
       ],
       [
-        '/',
+        '/maintenance_procedures_page',
         "More about my car",
         "Unleash your car's full potential",
         Icons.info,
