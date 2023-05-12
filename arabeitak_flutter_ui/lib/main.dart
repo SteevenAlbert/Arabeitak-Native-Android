@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
+import 'presentation/chat.dart';
+
 const platform = MethodChannel('flutter.native/helper');
 Future<void> navigateToPage(String pageName) async {
   try {

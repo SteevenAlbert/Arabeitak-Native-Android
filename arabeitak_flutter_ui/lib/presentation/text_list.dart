@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:arabeitak_flutter_ui/repositories/procedures.dart';
@@ -172,7 +170,11 @@ Widget CustomListTile(
               if (path == null) {
               } else {
                 // () => navigateToPage('/$path');
-                Navigator.pushNamed(context, '/$path');
+                Navigator.pushNamed(
+                  context,
+                  '/$path',
+                  arguments: text,
+                );
               }
             },
             child: Icon(
