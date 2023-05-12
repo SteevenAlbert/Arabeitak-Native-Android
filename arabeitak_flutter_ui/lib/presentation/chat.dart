@@ -1,3 +1,4 @@
+import 'package:arabeitak_flutter_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:arabeitak_flutter_ui/repositories/gpt.dart';
@@ -18,11 +19,7 @@ class _ChatPageState extends State<ChatPage> {
     Color userColor = const Color(0xFFE8E8EE);
     Color GPTColor = Theme.of(context).primaryColor;
     addUserBubble(String prompt) {
-      messages.add(
-          // BubbleNormal(
-          // BubbleSpecialOne(
-          BubbleSpecialTwo(
-        // BubbleSpecialThree(
+      messages.add(BubbleSpecialOne(
         text: prompt,
         isSender: true,
         color: userColor,
@@ -37,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     addGPTBubble(String response) {
-      messages.add(BubbleSpecialTwo(
+      messages.add(BubbleSpecialOne(
         text: response,
         isSender: false,
         color: GPTColor,
@@ -52,13 +49,15 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        leading: const BackButton(
-          color: Colors.black,
-        ),
-      ),
+      appBar: buildAppBar(
+          context: context,
+          title: "text-davinci-003",
+          leadingTitleWidget: const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage("assets/images/gpt_green.png"),
+            ),
+          )),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -75,7 +74,7 @@ class _ChatPageState extends State<ChatPage> {
               addUserBubble(prompt.toString());
               messages.add(
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: JumpingDots(
                     // innerPadding: 20,
                     color: GPTColor,

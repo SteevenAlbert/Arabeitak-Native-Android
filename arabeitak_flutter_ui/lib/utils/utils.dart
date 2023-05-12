@@ -21,9 +21,19 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
-AppBar buildAppBar({required context, title = ""}) {
+AppBar buildAppBar({required context, title = "", leadingTitleWidget}) {
   return AppBar(
-    title: Text(title),
+    title: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+      (leadingTitleWidget != null)
+          ? leadingTitleWidget
+          : const SizedBox(
+              width: 0,
+            ),
+      Text(
+        title,
+        style: const TextStyle(color: Colors.black),
+      ),
+    ]),
     backgroundColor: Theme.of(context).canvasColor,
     foregroundColor: Theme.of(context).primaryColor,
     elevation: 0,
