@@ -17,15 +17,14 @@ import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.FlutterEngineCache;
 import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugins.GeneratedPluginRegistrant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import remote_assistance.CallIntroActivity;
 
 /**
  * The MainActivity is used to display the list of samples and handles the runtime
@@ -101,6 +100,10 @@ public class MainActivity extends AppCompatActivity  {
             Log.d(TAG, "navigateToPage: " + pageName);
             Intent intent = new Intent(MainActivity.this, ARWikitudeActivity.class);
             intent.putExtra("procedure", "change_tyres");
+            startActivity(intent);
+        }else if(pageName.equals("/remote_assistance")){
+            Log.d(TAG, "navigateToPage: " + pageName);
+            Intent intent = new Intent(MainActivity.this, CallIntroActivity.class);
             startActivity(intent);
         }else{
             Log.d(TAG, "Route not found! route: " + pageName);
