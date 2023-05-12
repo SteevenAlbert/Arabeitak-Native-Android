@@ -1,3 +1,5 @@
+import 'package:arabeitak_flutter_ui/router.dart';
+import 'package:arabeitak_flutter_ui/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,7 +39,7 @@ void main() async {
         'ar',
       ]);
 
-  runApp(LocalizedApp(delegate, MyApp()));
+  runApp(LocalizedApp(delegate, const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -46,47 +48,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
     var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return LocalizationProvider(
-        state: LocalizationProvider.of(context).state,
-        child: MaterialApp(
-          initialRoute: '/',
-          routes: {
-            '/auth/log_in': (context) => LogInPage(),
-            '/auth/sign_up': (context) => SignUpPage(),
-            '/home': (context) => const HomePage(),
-            '/owned_cars_page': (context) => OwnedCarsPage(),
-            '/select_car_page': (context) => SelectCarModelPage(),
-            '/choices': (context) => ChoicesPage(),
-            '/ar_list': (context) => const ARList(),
-            '/text_list': (context) => const TextList(),
-            '/preview_text_instructions_page': (context) =>
-                PreviewTextInstructionsPage(),
-            '/settings': ((context) => SettingsPage()),
-            // '/hand_gesture': ((context) => const GesturePage()),
-          },
-          title: 'ARabeitak',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch()
-                .copyWith(primary: const Color(0xFF111111)),
-            fontFamily: GoogleFonts.openSans(
-              fontSize: 15,
-            ).fontFamily,
-          ),
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            localizationDelegate
-          ],
-          supportedLocales: localizationDelegate.supportedLocales,
-          locale: localizationDelegate.currentLocale,
-          home: const IntroPage(),
-        ));
+      state: LocalizationProvider.of(context).state,
+      child: MaterialApp.router(
+        routerConfig: MyRouter.router,
+        title: 'ARabeitak',
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.light,
+        darkTheme: kDarkThemeData,
+        theme: kLightThemeData,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          localizationDelegate
+        ],
+        supportedLocales: localizationDelegate.supportedLocales,
+        locale: localizationDelegate.currentLocale,
+      ),
+    );
   }
 }
