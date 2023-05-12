@@ -60,7 +60,9 @@ class _HomePageState extends State<HomePage> {
 
                     customButton(context, 'select_car', "Selected Car Model",
                         '/owned_cars_page'),
-                    customButton(context, 'settings', "Settings", '/settings'),
+                    customButton(context, 'ai', "Chat with GPT", '/chat'),
+
+                    // customButton(context, 'settings', "Settings", '/settings'),
                   ],
                 ),
               ],

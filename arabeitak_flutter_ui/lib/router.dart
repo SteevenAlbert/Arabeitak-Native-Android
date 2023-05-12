@@ -1,5 +1,6 @@
 import 'package:arabeitak_flutter_ui/presentation/all_cars_page/all_cars_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/ar_list.dart';
+import 'package:arabeitak_flutter_ui/presentation/chat.dart';
 import 'package:arabeitak_flutter_ui/presentation/home_page/home_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/instructions_page/instructions_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/introduction_page/introduction_page.dart';
@@ -74,6 +75,12 @@ class MyRouter {
             path: 'ar_list',
             builder: (BuildContext context, GoRouterState state) {
               return const ARList();
+            },
+          ),
+          GoRoute(
+            path: 'chat',
+            builder: (BuildContext context, GoRouterState state) {
+              return const ChatPage();
             },
           ),
         ],
