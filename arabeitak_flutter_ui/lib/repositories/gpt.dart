@@ -1,4 +1,4 @@
-import "package:arabeitak_flutter_ui/licenses/keys.dart";
+// import "package:arabeitak_flutter_ui/licenses/keys.dart";
 import 'package:authorization_header/authorization_header.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -32,7 +32,7 @@ List<Map<String, Map<String, dynamic>>> instructions = [
 ];
 
 //TODO: new openAI account
-final authHeader = Auth.of().bearer(token: openAIBearerToken);
+// final authHeader = Auth.of().bearer(token: openAIBearerToken);
 
 class GPT {
   // static Future<http.Response> getProcedure(
