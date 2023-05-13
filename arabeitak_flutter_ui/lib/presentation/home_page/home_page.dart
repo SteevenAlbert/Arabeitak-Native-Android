@@ -1,3 +1,4 @@
+import 'package:arabeitak_flutter_ui/domain/models/testing_car.dart';
 import 'package:arabeitak_flutter_ui/presentation/home_page/car_card.dart';
 import 'package:arabeitak_flutter_ui/presentation/home_page/header.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go('/all_cars_page');
+          context.push('/all_cars_page');
         },
         child: const Icon(Icons.add),
       ),
@@ -42,9 +43,9 @@ class HomePage extends StatelessWidget {
                   return Stack(
                     children: [
                       CarCard(
-                        name: "$index",
+                        car: TestingCar.myCars[index],
                       ),
-                      addCarImage(context),
+                      addCarImage(context, TestingCar.myCars[index].imagePath),
                     ],
                   );
                 },
@@ -56,7 +57,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget addCarImage(BuildContext context) {
+  Widget addCarImage(BuildContext context, String path) {
     return Align(
       alignment: Alignment.topLeft,
       child: ConstrainedBox(
@@ -64,8 +65,9 @@ class HomePage extends StatelessWidget {
             BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
         child: Padding(
           padding: const EdgeInsets.only(left: 20),
-          child: Image.network(
-              "https://s3.us-east-2.amazonaws.com/dealer-inspire-vps-vehicle-images/stock-images/chrome/30021bfe494c70240ab3419f034de887.png"),
+          child: Image(
+            image: AssetImage("assets/images/$path"),
+          ),
         ),
       ),
     );

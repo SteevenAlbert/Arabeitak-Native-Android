@@ -1,7 +1,9 @@
+import 'package:arabeitak_flutter_ui/domain/models/testing_car.dart';
 import 'package:flutter/material.dart';
 
 class CarHeader extends StatelessWidget {
-  const CarHeader({super.key});
+  final TestingCar car;
+  const CarHeader({super.key, required this.car});
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +13,12 @@ class CarHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Corolleti",
+            car.name??"",
             style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.left,
           ),
           Text(
-            'Toyota Corolla 2020',
+            car.model,
             style: Theme.of(context).textTheme.titleSmall,
             textAlign: TextAlign.left,
           ),

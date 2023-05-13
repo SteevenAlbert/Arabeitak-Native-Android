@@ -1,3 +1,4 @@
+import 'package:arabeitak_flutter_ui/domain/models/testing_car.dart';
 import 'package:arabeitak_flutter_ui/presentation/all_cars_page/all_cars_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/ar_list.dart';
 import 'package:arabeitak_flutter_ui/presentation/chat.dart';
@@ -30,7 +31,7 @@ class MyRouter {
           GoRoute(
             path: 'my_car_page',
             builder: (BuildContext context, GoRouterState state) {
-              return const MyCarPage();
+              return MyCarPage(car: state.extra as TestingCar);
             },
           ),
           GoRoute(

@@ -1,10 +1,11 @@
+import 'package:arabeitak_flutter_ui/domain/models/testing_car.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CarCard extends StatelessWidget {
-  final String name;
+  final TestingCar car;
 
-  const CarCard({Key? key, required this.name}) : super(key: key);
+  const CarCard({Key? key, required this.car}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +29,12 @@ class CarCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "Corolleti",
+                    car.name??"",
                     style: Theme.of(context).textTheme.titleLarge,
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    "Corolla 2020",
+                    car.model,
                     style: Theme.of(context).textTheme.titleMedium,
                     textAlign: TextAlign.left,
                   ),
@@ -43,7 +44,7 @@ class CarCard extends StatelessWidget {
                     children: [
                       OutlinedButton(
                         onPressed: () {
-                          context.go('/my_car_page');
+                          context.push('/my_car_page', extra: car);
                         },
                         style: OutlinedButton.styleFrom(
                             side: BorderSide(color:  Theme.of(context).primaryColor),

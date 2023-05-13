@@ -1,9 +1,10 @@
+import 'package:arabeitak_flutter_ui/domain/models/testing_car.dart';
 import 'package:flutter/material.dart';
 
 class CarCard extends StatelessWidget {
-  final String imagePath, carModel, carManufacturer;
+  final TestingCar car;
 
-  const CarCard({super.key, required this.imagePath, required this.carModel, required this.carManufacturer});
+  const CarCard({super.key, required this.car});
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +18,12 @@ class CarCard extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.contain,
-                  image: AssetImage(imagePath),
+                  image: AssetImage('assets/images/${car.imagePath}'),
                 ),
               ),
             ),
-        title: Text(carModel),
-        subtitle:Text(carManufacturer),
+        title: Text(car.model),
+        subtitle:Text(car.manufacturer),
       ),
       
     );
