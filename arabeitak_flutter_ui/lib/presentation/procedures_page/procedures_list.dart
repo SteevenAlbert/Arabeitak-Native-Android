@@ -14,15 +14,25 @@ Map<String, List<String>> convertToMap(String e) {
   return mapData;
 }
 
-Iterable<String> sections = Procedures.proceduresList.keys;
+Map<String, List<Object>>? list;
+Iterable<String>? sections;
 
 class ProceduresList extends StatelessWidget {
-  const ProceduresList({super.key, required this.isPortrait});
+  final String type;
+  const ProceduresList(
+      {super.key, required this.isPortrait, required this.type});
 
   final bool isPortrait;
 
   @override
   Widget build(BuildContext context) {
+    if (type == 'maintenance') {
+      list = Procedures.proceduresList;
+    } else {
+      list = Procedures.featuresList;
+    }
+    sections = list!.keys;
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       color: Colors.transparent,
@@ -39,13 +49,13 @@ class ProceduresList extends StatelessWidget {
           labelPadding: const EdgeInsets.all(8.0),
         ),
         tabs: [
-          for (String e in sections)
+          for (String e in sections!)
             Text(
               (e.split(" ").take(3)).join(" "),
             ),
         ],
         views: [
-          for (var i = 0; i < sections.length; i++)
+          for (var i = 0; i < sections!.length; i++)
             Container(
               alignment: Alignment.topLeft,
               child: Padding(
@@ -57,30 +67,34 @@ class ProceduresList extends StatelessWidget {
                   child: ListView(
                     shrinkWrap: true,
                     children: ListTile.divideTiles(context: context, tiles: [
-                      if (Procedures.proceduresList[sections.elementAt(i)] !=
-                          null)
-                        for (var e in Procedures
-                            .proceduresList[sections.elementAt(i)]!)
+                      if (list![sections!.elementAt(i)] != null)
+                        for (var e in list![sections!.elementAt(i)]!)
                           if (e.runtimeType == String)
                             CustomListTile(
-                                icon: e.toString().replaceAll('/', ''),
-                                text: e.toString(),
-                                path:
-                                    'ar_${e.toString().toLowerCase().replaceAll('/', '').replaceAll(' ', '_')}')
+                              icon: e.toString().replaceAll('/', ''),
+                              text: e.toString(),
+                              path:
+                                  // 'text_${e.toString().toLowerCase().replaceAll('/', '').replaceAll(' ', '_')}',
+                                  // '/preview_text_instructions_page',
+                                  '/instructions_page',
+                            )
                           else
                             for (String v
                                 in convertToMap(e.toString()).values.first)
                               CustomListTile(
-                                  icon:
-                                      '${convertToMap(e.toString()).keys.first} $v'
-                                          .replaceAll('/', ''),
-                                  text:
-                                      '${convertToMap(e.toString()).keys.first} $v',
-                                  path:
-                                      '${convertToMap(e.toString()).keys.first} $v'
-                                          .toLowerCase()
-                                          .replaceAll('/', '')
-                                          .replaceAll(' ', '_'))
+                                icon:
+                                    '${convertToMap(e.toString()).keys.first} $v'
+                                        .replaceAll('/', ''),
+                                text:
+                                    '${convertToMap(e.toString()).keys.first} $v',
+                                path:
+                                    // 'text_${convertToMap(e.toString()).keys.first} $v'
+                                    //     .toLowerCase()
+                                    //     .replaceAll('/', '')
+                                    //     .replaceAll(' ', '_'),
+                                    // '/preview_text_instructions_page',
+                                    '/instructions_page',
+                              )
                     ]).toList(),
                   ),
                 ),

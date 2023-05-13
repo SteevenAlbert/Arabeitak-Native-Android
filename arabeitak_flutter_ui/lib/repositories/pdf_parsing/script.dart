@@ -1,12 +1,20 @@
 import "package:python_shell/python_shell.dart";
+import "package:dartpy/dartpy.dart";
+import "package:dartpy/dartpy_annotations.dart";
+import 'dart:convert';
+import 'package:ffi/ffi.dart';
 
 runScript(String inPDFpath, List<String> keywords) async {
-  var shell = PythonShell(PythonShellConfig());
-  await shell.initialize().then((value) async {
-    print("Initializing done...");
-    var instance = ShellManager.getInstance("default");
-    instance.installRequires(["py_pdf_parser"]);
-    await instance.runString('''
+  // var shell = PythonShell(PythonShellConfig());
+  // await shell.initialize().then((value) async {
+  // print("Initializing done...");
+  //   var instance = ShellManager.getInstance("default");
+  //   instance.installRequires(["py_pdf_parser"]);
+  //   await instance.runString('''
+  dartpyc.Py_Initialize();
+  print("Initializing done...");
+  final python = '''
+ 
   print($inPDFpath)
   from py_pdf_parser.loaders import load_file
   from pprint import pprint
@@ -67,8 +75,14 @@ runScript(String inPDFpath, List<String> keywords) async {
   }
 
   pprint(output)
-''').then((value) {
-      return "Parsing done...";
-    });
-  });
+  ''';
+  final pystring = python.toNativeUtf8();
+  dartpyc.PyRun_SimpleString(pystring.cast<Int8>());
+  malloc.free(pystring);
+  print(dartpyc.Py_FinalizeEx());
+
+// ''').then((value) {
+//       return "Parsing done...";
+//     });
+//   });
 }

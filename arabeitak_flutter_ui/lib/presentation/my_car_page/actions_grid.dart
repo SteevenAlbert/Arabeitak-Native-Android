@@ -31,20 +31,28 @@ class ActionsGrid extends StatelessWidget {
   List<Widget> initActionsWidgets() {
     List<List> actions = [
       [
-        '/maintenance_procedures_page',
+        '/procedures_page',
         "Maintenance Procedures",
         "Keep it moving",
         Icons.handyman,
-        true
+        true,
+        {'type': 'maintenance'},
       ],
       [
-        '/maintenance_procedures_page',
+        '/procedures_page',
         "More about my car",
         "Unleash your car's full potential",
         Icons.info,
-        true
+        true,
+        {'type': 'feature_acquaintance'},
       ],
-      ['/remote_assistance', "Remote Assistance", "Call a specialist", Icons.video_call, false],
+      [
+        '/remote_assistance',
+        "Remote Assistance",
+        "Call a specialist",
+        Icons.video_call,
+        false
+      ],
       [
         '/chat',
         "Can't find your question?",
@@ -63,6 +71,7 @@ class ActionsGrid extends StatelessWidget {
         subtitle: item[2],
         iconData: item[3],
         isFlutterPath: item[4],
+        pathParams: item.length == 6 ? item[5]! : null,
       ));
     }
     return widgets;

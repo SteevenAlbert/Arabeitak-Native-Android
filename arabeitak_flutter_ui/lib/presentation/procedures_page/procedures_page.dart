@@ -2,8 +2,9 @@ import 'package:arabeitak_flutter_ui/presentation/procedures_page/procedures_lis
 import 'package:arabeitak_flutter_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-class MaintenaceProceduresPage extends StatelessWidget {
-  const MaintenaceProceduresPage({super.key});
+class ProceduresPage extends StatelessWidget {
+  String type;
+  ProceduresPage({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,9 @@ class MaintenaceProceduresPage extends StatelessWidget {
       appBar: buildAppBar(context: context),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          return MediaQuery.of(context).orientation == Orientation.portrait? _buildNormalContainer(context):  _buildWideContainers(context);
+          return MediaQuery.of(context).orientation == Orientation.portrait
+              ? _buildNormalContainer(context)
+              : _buildWideContainers(context);
         },
       ),
     );
@@ -26,7 +29,7 @@ class MaintenaceProceduresPage extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width / 2,
         ),
-        const ProceduresList(isPortrait: false),
+        ProceduresList(isPortrait: false, type: type),
       ],
     );
   }
@@ -41,7 +44,7 @@ class MaintenaceProceduresPage extends StatelessWidget {
           alignment: Alignment.topCenter,
           height: MediaQuery.of(context).size.height * 0.3,
         ),
-        const ProceduresList(isPortrait: true),
+        ProceduresList(isPortrait: true, type: type)
       ],
     );
   }

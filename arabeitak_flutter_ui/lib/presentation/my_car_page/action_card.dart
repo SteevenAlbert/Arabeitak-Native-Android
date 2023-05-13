@@ -6,9 +6,11 @@ class ActionCard extends StatelessWidget {
   final IconData iconData;
   final String title, subtitle, path;
   final bool isFlutterPath;
+  Map<String, String>? pathParams;
 
-  const ActionCard(
+  ActionCard(
       {required this.path,
+      this.pathParams,
       required this.title,
       required this.subtitle,
       required this.iconData,
@@ -19,7 +21,11 @@ class ActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        isFlutterPath ? context.push(path) : navigateToPage(path);
+        pathParams == null
+            ? isFlutterPath
+                ? context.push(path)
+                : navigateToPage(path)
+            : context.go('$path/${pathParams!['type']}');
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

@@ -86,7 +86,7 @@ class TextList extends StatelessWidget {
                                       context: context,
                                       icon: e.toString().replaceAll('/', ''),
                                       text: e.toString(),
-                                      path: 'preview_text_instructions_page',
+                                      path: '/preview_text_instructions_page',
                                       // 'text_${e.toString().toLowerCase().replaceAll('/', '').replaceAll(' ', '_')}',
                                     )
                                   else
@@ -100,7 +100,7 @@ class TextList extends StatelessWidget {
                                                 .replaceAll('/', ''),
                                         text:
                                             '${convertToMap(e.toString()).keys.first} $v',
-                                        path: 'preview_text_instructions_page',
+                                        path: '/preview_text_instructions_page',
                                         // 'text_${convertToMap(e.toString()).keys.first} $v'
                                         //     .toLowerCase()
                                         //     .replaceAll('/', '')

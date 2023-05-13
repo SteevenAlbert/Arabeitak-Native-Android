@@ -28,6 +28,9 @@ class Procedures {
       'Replace The Air Conditioning Filter',
       'Replace The Electronic Key Battery',
     ],
+  };
+
+  static var featuresList = {
     'Get More Familiar With Your Car': [
       {
         'Adjust': [

@@ -9,7 +9,7 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => context.push('/instructions_page'),
+      onTap: () => context.go(path),
       leading: ImageIcon(
         AssetImage("assets/icons/$icon.png"),
       ),

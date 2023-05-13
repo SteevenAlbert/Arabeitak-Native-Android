@@ -7,7 +7,8 @@ import 'package:arabeitak_flutter_ui/presentation/instructions_page/instructions
 import 'package:arabeitak_flutter_ui/presentation/introduction_page/introduction_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/my_car_page/my_car_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/owned_cars.dart';
-import 'package:arabeitak_flutter_ui/presentation/procedures_page/maintenance_procedures_page.dart';
+import 'package:arabeitak_flutter_ui/presentation/preview_text_instructions_page.dart';
+import 'package:arabeitak_flutter_ui/presentation/procedures_page/procedures_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/select_car_model_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/text_list.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +36,12 @@ class MyRouter {
             },
           ),
           GoRoute(
-            path: 'maintenance_procedures_page',
+            path: 'procedures_page/:type',
+            name: 'procedures_page',
             builder: (BuildContext context, GoRouterState state) {
-              return const MaintenaceProceduresPage();
+              return ProceduresPage(
+                type: state.pathParameters['type']!,
+              );
             },
           ),
           GoRoute(
@@ -52,7 +56,12 @@ class MyRouter {
               return const InstructionsPage();
             },
           ),
-
+          GoRoute(
+            path: 'chat',
+            builder: (BuildContext context, GoRouterState state) {
+              return const ChatPage();
+            },
+          ),
           // Old paths
           GoRoute(
             path: 'owned_cars',
@@ -79,9 +88,9 @@ class MyRouter {
             },
           ),
           GoRoute(
-            path: 'chat',
+            path: 'preview_text_instructions_page',
             builder: (BuildContext context, GoRouterState state) {
-              return const ChatPage();
+              return PreviewTextInstructionsPage();
             },
           ),
         ],
