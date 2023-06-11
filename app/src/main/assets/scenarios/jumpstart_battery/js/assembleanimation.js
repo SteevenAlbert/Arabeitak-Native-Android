@@ -52,7 +52,7 @@ var World = {
         },
 
         createBox: function createBoxFn(){
-            var boxScale = 0.009
+            var boxScale = 0.002
                 this.Box = new AR.Model("assets/Box.wt3",{
                     scale: {
                         x: boxScale,
@@ -60,14 +60,14 @@ var World = {
                         z: boxScale
                     },
                   rotate: {
-                     x: 0,
+                     x: 270,
                      y: 90.0,
                      z: 0
                    },
                  translate: {
-                       x: -1.4,
-                       y: 2.5,
-                       z: -0.5
+                       x: -0.409,
+                       y: 0.564,
+                       z: -0.101
                    },
                     enabled: true,
                     onError: World.onError
@@ -75,25 +75,24 @@ var World = {
                 World.drawables.push(this.Box);
             },
 
-
     /******************/
     /* CREATE TRACKER */
     /******************/
   createTracker: function createTrackerFn() {
-        this.targetCollectionResource = new AR.TargetCollectionResource("assets/toyota_image.wtc", {
+        this.targetCollectionResource = new AR.TargetCollectionResource("assets/toyota_battery_obj.wto", {
             onError: World.onError
         });
 
-          this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
+          this.tracker = new AR.ObjectTracker(this.targetCollectionResource, {
 
                           onError: World.onError
                       });
 
-      this.Toyota = new AR.ImageTrackable(this.tracker, "*", {
+      this.Toyota = new AR.ObjectTrackable(this.tracker, "*", {
                         drawables: {
                             cam: World.drawables
                         },
-                         onImageRecognized: World.hideInfoBar,
+                         onObjectRecognized: World.hideInfoBar,
                          onError: World.onError
                      });
 
@@ -136,7 +135,7 @@ var World = {
             zOrder:99
         });
 
-        this.objectTrackable2 = new AR.ImageTrackable (this.tracker, "*", {
+        this.objectTrackable2 = new AR.ObjectTrackable (this.tracker, "*", {
             drawables: {
                 cam: World.instructionWidget
             },
@@ -157,8 +156,8 @@ var World = {
      var boxTranslationAnimation1 = new AR.PropertyAnimation(
                 World.Box,
                 "translate.y",
-                2.5,
-                2.5 + 1, animationDuration, {}
+                0,
+                0.5 + 1, animationDuration, {}
             );
         var animationGroup = new AR.AnimationGroup(
                     AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [boxTranslationAnimation1]
@@ -210,6 +209,9 @@ var World = {
         World.steps.push(appearingAnimationGroup);
         World.steps.push(disappearingAnimationGroup);
         World.steps.push(emptyAnimationGroup);
+        World.steps.push(emptyAnimationGroup);
+        World.steps.push(emptyAnimationGroup);
+
     },
 
     /********************/
