@@ -13,7 +13,9 @@ var World = {
         World.createBox();
         World.createBoxAnimation();
         World.createRedArrow();
+        World.createBlackArrow();
         World.createRedArrowAppearingAnimation();
+        World.createBlackArrowAppearingAnimation();
         World.createBtn({
                     translate: {
                         x: 0,
@@ -28,7 +30,7 @@ var World = {
     /* LOAD 3D ASSETS */
     /******************/
     createRedArrow: function createRedArrowFn(){
-        var arrowScale = 0.003
+        var arrowScale = 0.001
             this.RedArrow = new AR.Model("assets/Arrow-RED-OP.wt3",{
                 scale: {
                     x: arrowScale,
@@ -36,14 +38,14 @@ var World = {
                     z: arrowScale
                 },
               rotate: {
-                 x: 0.0,
-                 y: 90.0,
-                 z: 180
-               },
+                 x: 90.0,
+                 y: 0.0,
+                 z: 270
+              },
              translate: {
-                   x: -1.5,
-                   y: 0.5,
-                   z: 0.7
+                   x: -0.41,
+                   y: 0.969,
+                   z: -0.231
                },
                 enabled: false,
                 onError: World.onError
@@ -51,8 +53,34 @@ var World = {
             World.drawables.push(this.RedArrow);
         },
 
+
+      createBlackArrow: function createBlackArrowFn(){
+        var arrowScale = 0.001
+
+            this.BlackArrow = new AR.Model("assets/Arrow-RED-OP.wt3",{
+                scale: {
+                    x: arrowScale,
+                    y: arrowScale,
+                    z: arrowScale
+                },
+              rotate: {
+                 x: 90.0,
+                 y: 0.0,
+                 z: 270
+              },
+             translate: {
+                   x: 0.43,
+                   y: 0.969,
+                   z: -0.231
+               },
+                enabled: false,
+                onError: World.onError
+            });
+            World.drawables.push(this.BlackArrow);
+        },
+
         createBox: function createBoxFn(){
-            var boxScale = 0.002
+            var boxScale = 0.0022
                 this.Box = new AR.Model("assets/Box.wt3",{
                     scale: {
                         x: boxScale,
@@ -61,13 +89,13 @@ var World = {
                     },
                   rotate: {
                      x: 270,
-                     y: 90.0,
+                     y: 0.0,
                      z: 0
                    },
                  translate: {
-                       x: -0.409,
+                       x: -0.462,
                        y: 0.564,
-                       z: -0.101
+                       z: -0.249
                    },
                     enabled: true,
                     onError: World.onError
@@ -113,14 +141,14 @@ var World = {
               },
             onScaleEnded: World.toggleSnapping,
             scale: {
-                x: 12,
-                y: 12,
-                z: 12
+                x: 8,
+                y: 8,
+                z: 8
             },
             translate: {
-                x: 1.5,
+                x: -1.5,
                 y: 0,
-                z: 1
+                z: -1.5
             },
             rotate: {
                 x:180,
@@ -156,8 +184,8 @@ var World = {
      var boxTranslationAnimation1 = new AR.PropertyAnimation(
                 World.Box,
                 "translate.y",
-                0,
-                0.5 + 1, animationDuration, {}
+                0.546,
+                 0.8, animationDuration, {}
             );
         var animationGroup = new AR.AnimationGroup(
                     AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [boxTranslationAnimation1]
@@ -168,30 +196,31 @@ var World = {
         //animationGroup.start()
         World.steps.push(animationGroup)
     },
+
     createRedArrowAppearingAnimation: function createRedArrowAppearingAnimationFn(){
         animationDuration = 1500;
-        var sx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0, 0.003, animationDuration, {
+        var sx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0, 0.001, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var sy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0, 0.003, animationDuration, {
+        var sy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0, 0.001, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var sz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0, 0.003, animationDuration, {
+        var sz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0, 0.001, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
 
-        var isx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0.003, 0, animationDuration, {
+        var isx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0.001, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var isy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0.003, 0, animationDuration, {
+        var isy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0.001, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var isz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0.003, 0, animationDuration, {
+        var isz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0.001, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
@@ -209,11 +238,54 @@ var World = {
         World.steps.push(appearingAnimationGroup);
         World.steps.push(disappearingAnimationGroup);
         World.steps.push(emptyAnimationGroup);
-        World.steps.push(emptyAnimationGroup);
-        World.steps.push(emptyAnimationGroup);
+
+
+
 
     },
 
+
+createBlackArrowAppearingAnimation: function createBlackArrowAppearingAnimation(){
+        animationDuration = 1500;
+        var sx = new AR.PropertyAnimation(World.BlackArrow, "scale.x", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var sy = new AR.PropertyAnimation(World.BlackArrow, "scale.y", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var sz = new AR.PropertyAnimation(World.BlackArrow, "scale.z", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+
+        var isx = new AR.PropertyAnimation(World.BlackArrow, "scale.x", 0.001, 0, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var isy = new AR.PropertyAnimation(World.BlackArrow, "scale.y", 0.001, 0, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var isz = new AR.PropertyAnimation(World.BlackArrow, "scale.z", 0.001, 0, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var blackAppearingAnimationGroup = new AR.AnimationGroup(
+                            AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, [sx,sy,sz]
+                        );
+        var blackDisappearingAnimationGroup = new AR.AnimationGroup(
+                                    AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, [isx,isy,isz]
+                                );
+
+        var emptyAnimationGroup = new AR.AnimationGroup(
+                                    AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, []
+                                );
+
+        World.steps.push(blackAppearingAnimationGroup);
+        World.steps.push(blackDisappearingAnimationGroup);
+    },
     /********************/
     /* CREATE AUDIO */
     /********************/
@@ -238,6 +310,9 @@ var World = {
             if(step==1){
                 World.RedArrow.enabled = true;
                 World.Box.enabled = false;
+            };
+            if(step==4){
+                World.BlackArrow.enabled = true;
             };
             World.steps[step].start();
             World.audio[step].play();
