@@ -28,7 +28,7 @@ var World = {
     /* LOAD 3D ASSETS */
     /******************/
     createRedArrow: function createRedArrowFn(){
-        var arrowScale = 0.003
+        var arrowScale = 0.001
             this.RedArrow = new AR.Model("assets/Arrow-RED-OP.wt3",{
                 scale: {
                     x: arrowScale,
@@ -36,14 +36,14 @@ var World = {
                     z: arrowScale
                 },
               rotate: {
-                 x: 0.0,
-                 y: 90.0,
-                 z: 180
+                 x: 90.0,
+                 y: 0.0,
+                 z: 90
                },
              translate: {
-                   x: -1.5,
-                   y: 0.5,
-                   z: 0.7
+                   x: -0.398,
+                   y: 0.969,
+                   z: -0.231
                },
                 enabled: false,
                 onError: World.onError
@@ -52,7 +52,7 @@ var World = {
         },
 
         createBox: function createBoxFn(){
-            var boxScale = 0.002
+            var boxScale = 0.001
                 this.Box = new AR.Model("assets/Box.wt3",{
                     scale: {
                         x: boxScale,
@@ -67,7 +67,7 @@ var World = {
                  translate: {
                        x: -0.409,
                        y: 0.564,
-                       z: -0.101
+                       z: -0.181
                    },
                     enabled: true,
                     onError: World.onError
@@ -156,8 +156,8 @@ var World = {
      var boxTranslationAnimation1 = new AR.PropertyAnimation(
                 World.Box,
                 "translate.y",
-                0,
-                0.5 + 1, animationDuration, {}
+                0.564,
+                1, animationDuration, {}
             );
         var animationGroup = new AR.AnimationGroup(
                     AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [boxTranslationAnimation1]
@@ -174,24 +174,24 @@ var World = {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var sy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0, 0.003, animationDuration, {
+        var sy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0, 0.002, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var sz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0, 0.003, animationDuration, {
+        var sz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0, 0.002, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
 
-        var isx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0.003, 0, animationDuration, {
+        var isx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0.002, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var isy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0.003, 0, animationDuration, {
+        var isy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0.002, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var isz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0.003, 0, animationDuration, {
+        var isz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0.002, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
