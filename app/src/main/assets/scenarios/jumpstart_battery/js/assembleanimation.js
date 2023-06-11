@@ -31,6 +31,7 @@ var World = {
     /******************/
     createRedArrow: function createRedArrowFn(){
         var arrowScale = 0.001
+        var arrowScale = 0.001
             this.RedArrow = new AR.Model("assets/Arrow-RED-OP.wt3",{
                 scale: {
                     x: arrowScale,
