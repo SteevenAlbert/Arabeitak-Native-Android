@@ -100,12 +100,12 @@
          setContentView(architectView);
          getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
          timer = new Timer();
-         timer.scheduleAtFixedRate(new TimerTask() {
-             @Override
-             public void run() {
-                 architectView.captureScreen(ArchitectView.CaptureScreenCallback.CAPTURE_MODE_CAM, ARWikitudeActivity.this);
-             }
-         }, 0, 2000);
+//         timer.scheduleAtFixedRate(new TimerTask() {
+//             @Override
+//             public void run() {
+//                 architectView.captureScreen(ArchitectView.CaptureScreenCallback.CAPTURE_MODE_CAM, ARWikitudeActivity.this);
+//             }
+//         }, 0, 2000);
      }
  
      @Override

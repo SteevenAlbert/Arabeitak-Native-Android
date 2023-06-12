@@ -8,7 +8,7 @@ var World = {
     snapped: false,
     interactionContainer: 'snapContainer',
     defaultScale: 0,
-
+    step: 0,
     init: function initFn(){
         World.createBox();
         World.createBoxAnimation();
@@ -16,12 +16,8 @@ var World = {
         World.createBlackArrow();
         World.createRedArrowAppearingAnimation();
         World.createBlackArrowAppearingAnimation();
-        World.createBtn({
-                    translate: {
-                        x: 0,
-                        z: 0.5,
-                    }
-                });
+        World.createNextBtn();
+        World.createBackBtn();
         World.createAudio();
         World.createTracker();
     },
@@ -55,59 +51,59 @@ var World = {
         },
 
 
-      createBlackArrow: function createBlackArrowFn(){
-        var arrowScale = 0.001
+    createBlackArrow: function createBlackArrowFn(){
+    var arrowScale = 0.0008
 
-            this.BlackArrow = new AR.Model("assets/Arrow-RED-OP.wt3",{
+        this.BlackArrow = new AR.Model("assets/Arrow-Black.wt3",{
+            scale: {
+                x: arrowScale,
+                y: arrowScale,
+                z: arrowScale
+            },
+            rotate: {
+                x: 90.0,
+                y: 0.0,
+                z: 270
+            },
+            translate: {
+                x: 0.42,
+                y: 0.763,
+                z: -0.25
+            },
+            enabled: false,
+            onError: World.onError
+        });
+        World.drawables.push(this.BlackArrow);
+    },
+
+    createBox: function createBoxFn(){
+        var boxScale = 0.0022
+            this.Box = new AR.Model("assets/Box.wt3",{
                 scale: {
-                    x: arrowScale,
-                    y: arrowScale,
-                    z: arrowScale
+                    x: boxScale,
+                    y: boxScale,
+                    z: boxScale
                 },
-              rotate: {
-                 x: 90.0,
-                 y: 0.0,
-                 z: 270
-              },
-             translate: {
-                   x: 0.43,
-                   y: 0.969,
-                   z: -0.231
-               },
-                enabled: false,
+                rotate: {
+                    x: 270,
+                    y: 0.0,
+                    z: 0
+                },
+                translate: {
+                    x: -0.462,
+                    y: 0.564,
+                    z: -0.249
+                },
+                enabled: true,
                 onError: World.onError
             });
-            World.drawables.push(this.BlackArrow);
+            World.drawables.push(this.Box);
         },
-
-        createBox: function createBoxFn(){
-            var boxScale = 0.0022
-                this.Box = new AR.Model("assets/Box.wt3",{
-                    scale: {
-                        x: boxScale,
-                        y: boxScale,
-                        z: boxScale
-                    },
-                  rotate: {
-                     x: 270,
-                     y: 0.0,
-                     z: 0
-                   },
-                 translate: {
-                       x: -0.462,
-                       y: 0.564,
-                       z: -0.249
-                   },
-                    enabled: true,
-                    onError: World.onError
-                });
-                World.drawables.push(this.Box);
-            },
 
     /******************/
     /* CREATE TRACKER */
-    /******************/
-  createTracker: function createTrackerFn() {
+    /******************/ 
+    createTracker: function createTrackerFn() {
         this.targetCollectionResource = new AR.TargetCollectionResource("assets/toyota_battery_obj.wto", {
             onError: World.onError
         });
@@ -131,37 +127,15 @@ var World = {
             viewportWidth: 500,
             viewportHeight: 500,
             opacity:0.8,
-//            onClick: World.toggleSnapping,
             onError: World.onError,
-              onDragBegan: function(xNormalized , yNormalized ) {
+              onDragEnded: function(xNormalized , yNormalized ) {
                     if(yNormalized<0){
                         World.scrollSteps(100);
                     }else{
                         World.scrollSteps(-100);
                     }
               },
-            onScaleEnded: World.toggleSnapping,
-            scale: {
-                x: 8,
-                y: 8,
-                z: 8
-            },
-            translate: {
-                x: -1.5,
-                y: 0,
-                z: -1.5
-            },
-            rotate: {
-                x:180,
-                y:180,
-                z:180
-            },
-//            horizontalAnchor: AR.CONST.HORIZONTAL_ANCHOR.RIGHT,
-//            verticalAnchor: AR.CONST.VERTICAL_ANCHOR.TOP,
-            allowDocumentLocationChanges: true,
-            clickThroughEnabled: true,
-            mirrored:true,
-            zOrder:99
+            onScaleEnded: World.toggleSnapping,       
         });
 
         this.objectTrackable2 = new AR.ObjectTrackable (this.tracker, "*", {
@@ -175,7 +149,7 @@ var World = {
             onObjectLost: World.objectLost,
             onError: World.onError
         });
-
+        World.applyLayout(World.instructionsMenu.normal);
     },
     /********************/
     /* CREATE ANIMATION */
@@ -239,14 +213,10 @@ var World = {
         World.steps.push(appearingAnimationGroup);
         World.steps.push(disappearingAnimationGroup);
         World.steps.push(emptyAnimationGroup);
-
-
-
-
     },
 
 
-createBlackArrowAppearingAnimation: function createBlackArrowAppearingAnimation(){
+    createBlackArrowAppearingAnimation: function createBlackArrowAppearingAnimation(){
         animationDuration = 1500;
         var sx = new AR.PropertyAnimation(World.BlackArrow, "scale.x", 0, 0.001, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
@@ -286,6 +256,7 @@ createBlackArrowAppearingAnimation: function createBlackArrowAppearingAnimation(
 
         World.steps.push(blackAppearingAnimationGroup);
         World.steps.push(blackDisappearingAnimationGroup);
+        World.steps.push(emptyAnimationGroup);
     },
     /********************/
     /* CREATE AUDIO */
@@ -300,83 +271,136 @@ createBlackArrowAppearingAnimation: function createBlackArrowAppearingAnimation(
     /******************/
     /*   UI Elements  */
     /******************/
-    createBtn: function createBtnFn(options) {
-        step=0;
-        var btn = new AR.ImageResource("assets/nextbtn2.png", {
+    createNextBtn: function createNextBtnFn() {
+        options ={};
+        var btn = new AR.ImageResource("assets/nextbtn.png", {
             onError: World.onError
-
         });
-
+        options.translate =  {
+            x: 0,
+            z: 0.5,
+        }
+        options.rotate =  {
+            x: 90.0,
+        }
+        options.opacity = 0.9;
         options.onClick = function () {
-            if(step==1){
+            if (World.step === 1) {
                 World.RedArrow.enabled = true;
                 World.Box.enabled = false;
-            };
-            if(step==4){
-                World.BlackArrow.enabled = true;
-            };
-            World.steps[step].start();
-            World.audio[step].play();
-            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
-            step++;
-            if(step==World.steps.length){
             }
+            
+            if (World.step === 4) {
+                World.BlackArrow.enabled = true;
+            }
+            
+            if (World.step !== 0 && (World.audio[World.step-1].state == 2 || World.audio[World.step-1].state == 3)) {
+                    World.audio[World.step-1].stop();
+            }
+                        
+            scrollFlag = World.step > 6 ? false : true;
+            
+            if (World.step > 2 && scrollFlag) {
+                World.scrollSteps(200);
+            }
+            
+            World.steps[World.step].start();
+            World.audio[World.step].play();
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
+            World.step++;
         }
-        var overlayOne = new AR.ImageDrawable(btn, 0.5, options)
-        World.drawables.push(overlayOne);
+        var nextbtn = new AR.ImageDrawable(btn, 0.25, options)
+        World.drawables.push(nextbtn);
     },
 
-     toggleSnapping: function toggleSnappingFn() {
-            World.snapped = !World.snapped;
-            World.objectTrackable2.snapToScreen.enabled = World.snapped;
-
-            if (World.snapped) {
-                World.applyLayout(World.layout.snapped);
+    createBackBtn: function createBackBtn() {
+        options ={};
+        var backbtn = new AR.ImageResource("assets/backbtn.png", {
+            onError: World.onError
+        });
+        options.opacity = 0.7;
+        options.translate =  {
+            x: -0.65,
+            y: -0.4,
+            z: 0.5,
+        }
+        options.rotate =  {
+            x: 90.0,
+        }
+        options.onClick = function () {
+            if (World.step !== 0 && (World.audio[World.step-1].state == 2 || World.audio[World.step-1].state == 3)) {
+                World.audio[World.step-1].stop();
             }
-            else {
-                World.applyLayout(World.layout.normal);
+            if(World.step>0){
+                World.step--;     
             }
-        },
+            if(World.step<2){
+                World.Box.enabled = true;
+                World.RedArrow.enabled = false;            
+            }
 
-     scrollSteps: function ScrollStepsFn(pixels){
+            if (World.step < 5) {
+                World.BlackArrow.enabled = false;
+            }
+               
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = 'white'; step.style.color= 'black'; console.log(step.style.backgroundColor);");
+        }
+        var backbtn = new AR.ImageDrawable(backbtn, 0.18, options)
+        World.drawables.push(backbtn);
+    },
+
+    toggleSnapping: function toggleSnappingFn() {
+        World.snapped = !World.snapped;
+        World.objectTrackable2.snapToScreen.enabled = World.snapped;
+
+        if (World.snapped) {
+
+            World.applyLayout(World.instructionsMenu.snapped);
+        }
+        else {
+
+            World.applyLayout(World.instructionsMenu.normal);
+        }
+    },
+
+    scrollSteps: function ScrollStepsFn(pixels){
         World.instructionWidget.evalJavaScript("document.getElementById('main').scrollBy(0,"+pixels+");");
-       World.instructionWidget.evalJavaScript("console.log('Scrolled!')");
-     },
+    // World.instructionWidget.evalJavaScript("document.getElementById('main').scrollBy({ top: "+pixels+", behavior: 'smooth' });");
+    },
 
-        applyLayout: function applyLayoutFn(layout) {
-            World.instructionWidget.scale = {
-                x: layout.instructionsScale,
-                y: layout.instructionsScale,
-                z: layout.instructionsScale
-            };
-//            World.instructionWidget.rotate = {
-//            x:90,
-//            y:90,
-//            z:90
-//            }
-            World.instructionWidget.translate = {
-                x: layout.TranslateX,
-                y: 0,
-                z: 0
-            };
-        },
+    applyLayout: function applyLayoutFn(instructionsMenu) {
+        World.instructionWidget.scale = {
+            x: instructionsMenu.instructionsScale,
+            y: instructionsMenu.instructionsScale,
+            z: instructionsMenu.instructionsScale
+        };
+        World.instructionWidget.translate = {
+            x: instructionsMenu.TranslateX,
+            y: 0,
+            z: 0
+        };
+    },
 
-     layout: {
+    hideDisclaimer: function hideDisclaimerFn() {
+        document.getElementById("popup").style.display = "none";
+    },
+
+     instructionsMenu: {
              normal: {
                  name: "normal",
                  offsetX: 0,
                  offsetY: 0,
-                 opacity: 1.0,
+                 opacity: 0.9,
                  instructionsScale: 8.5,
-                 TranslateX: 1.5,
+                 TranslateX: -1.5,
                  TranslateY: 0,
-                 TranslateZ: 1,
+                 TranslateZ: -1.5,
              },
              snapped: {
                  name: "snapped",
                  offsetX: 1.0,
                  offsetY: 0.45,
-                 opacity: 0.5,
+                 opacity: 0.6,
                  instructionsScale: 7.0,
                  TranslateX: -0.7,
                  TranslateY: 0.5,
