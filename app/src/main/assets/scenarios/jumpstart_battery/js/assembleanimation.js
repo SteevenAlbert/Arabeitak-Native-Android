@@ -67,8 +67,8 @@ var World = {
             },
             translate: {
                 x: 0.42,
-                y: 0.763,
-                z: -0.25
+                y: 0.873,
+                z: -0.5
             },
             enabled: false,
             onError: World.onError
@@ -277,7 +277,7 @@ var World = {
             onError: World.onError
         });
         options.translate =  {
-            x: 0,
+            x: 0.2,
             z: 0.5,
         }
         options.rotate =  {
@@ -309,7 +309,7 @@ var World = {
             World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
             World.step++;
         }
-        var nextbtn = new AR.ImageDrawable(btn, 0.25, options)
+        var nextbtn = new AR.ImageDrawable(btn, 0.2, options)
         World.drawables.push(nextbtn);
     },
 
@@ -320,8 +320,8 @@ var World = {
         });
         options.opacity = 0.7;
         options.translate =  {
-            x: -0.65,
-            y: -0.4,
+            x: -0.45,
+            y: 0,
             z: 0.5,
         }
         options.rotate =  {
@@ -345,7 +345,7 @@ var World = {
                
             World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = 'white'; step.style.color= 'black'; console.log(step.style.backgroundColor);");
         }
-        var backbtn = new AR.ImageDrawable(backbtn, 0.18, options)
+        var backbtn = new AR.ImageDrawable(backbtn, 0.2, options)
         World.drawables.push(backbtn);
     },
 
@@ -392,9 +392,10 @@ var World = {
                  offsetY: 0,
                  opacity: 0.9,
                  instructionsScale: 8.5,
-                 TranslateX: -1.5,
-                 TranslateY: 0,
-                 TranslateZ: -1.5,
+                 TranslateX: -1.5
+                 ,
+                 TranslateY: 1,
+                 TranslateZ: 0.5,
              },
              snapped: {
                  name: "snapped",
