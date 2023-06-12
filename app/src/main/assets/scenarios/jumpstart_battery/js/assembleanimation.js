@@ -9,6 +9,9 @@ var World = {
     interactionContainer: 'snapContainer',
     defaultScale: 0,
     step: 0,
+    nextbtn: null,
+    backbtn: null,
+    startFlag: false,
     init: function initFn(){
         World.createBox();
         World.createBoxAnimation();
@@ -16,6 +19,7 @@ var World = {
         World.createBlackArrow();
         World.createRedArrowAppearingAnimation();
         World.createBlackArrowAppearingAnimation();
+        World.createStartBtn();
         World.createNextBtn();
         World.createBackBtn();
         World.createAudio();
@@ -117,7 +121,7 @@ var World = {
                         drawables: {
                             cam: World.drawables
                         },
-                         onObjectRecognized: World.hideInfoBar,
+                         onObjectRecognized: World.hideScanBox,
                          onError: World.onError
                      });
 
@@ -271,6 +275,31 @@ var World = {
     /******************/
     /*   UI Elements  */
     /******************/
+    createStartBtn: function createStartBtnFn() {
+        var startbtn = new AR.ImageResource("assets/startbtn.png", {
+            onError: World.onError
+        });
+        options = {};
+        options.translate =  {
+            x: 0.2,
+            z: 0.5,
+        }
+        options.rotate =  {
+            x: 90.0,
+        }
+        options.opacity = 0.9;
+        options.onClick = function () {
+            World.steps[World.step].start();
+            World.audio[World.step].play();
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
+            World.step++;
+            startbtn.destroy();
+            World.nextbtn.enabled = true;
+            World.backbtn.enabled = true;
+        }
+        var startbtn = new AR.ImageDrawable(startbtn, 0.4, options)
+        World.drawables.push(startbtn);
+    },
     createNextBtn: function createNextBtnFn() {
         options ={};
         var btn = new AR.ImageResource("assets/nextbtn.png", {
@@ -284,6 +313,7 @@ var World = {
             x: 90.0,
         }
         options.opacity = 0.9;
+        options.enabled = false;
         options.onClick = function () {
             if (World.step === 1) {
                 World.RedArrow.enabled = true;
@@ -309,8 +339,8 @@ var World = {
             World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
             World.step++;
         }
-        var nextbtn = new AR.ImageDrawable(btn, 0.2, options)
-        World.drawables.push(nextbtn);
+        World.nextbtn = new AR.ImageDrawable(btn, 0.2, options)
+        World.drawables.push(World.nextbtn);
     },
 
     createBackBtn: function createBackBtn() {
@@ -327,6 +357,7 @@ var World = {
         options.rotate =  {
             x: 90.0,
         }
+        options.enabled = false;
         options.onClick = function () {
             if (World.step !== 0 && (World.audio[World.step-1].state == 2 || World.audio[World.step-1].state == 3)) {
                 World.audio[World.step-1].stop();
@@ -345,8 +376,8 @@ var World = {
                
             World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = 'white'; step.style.color= 'black'; console.log(step.style.backgroundColor);");
         }
-        var backbtn = new AR.ImageDrawable(backbtn, 0.2, options)
-        World.drawables.push(backbtn);
+        World.backbtn = new AR.ImageDrawable(backbtn, 0.2, options)
+        World.drawables.push(World.backbtn);
     },
 
     toggleSnapping: function toggleSnappingFn() {
@@ -381,8 +412,8 @@ var World = {
         };
     },
 
-    hideDisclaimer: function hideDisclaimerFn() {
-        document.getElementById("popup").style.display = "none";
+    hideScanBox: function hideScanBoxFn() {
+        document.getElementById("scanbox").style.display = "none";
     },
 
      instructionsMenu: {
