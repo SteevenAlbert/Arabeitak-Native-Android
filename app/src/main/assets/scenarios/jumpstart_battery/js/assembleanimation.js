@@ -8,18 +8,20 @@ var World = {
     snapped: false,
     interactionContainer: 'snapContainer',
     defaultScale: 0,
-
+    step: 0,
+    nextbtn: null,
+    backbtn: null,
+    startFlag: false,
     init: function initFn(){
         World.createBox();
         World.createBoxAnimation();
         World.createRedArrow();
+        World.createBlackArrow();
         World.createRedArrowAppearingAnimation();
-        World.createBtn({
-                    translate: {
-                        x: 0,
-                        z: 0.5,
-                    }
-                });
+        World.createBlackArrowAppearingAnimation();
+        World.createStartBtn();
+        World.createNextBtn();
+        World.createBackBtn();
         World.createAudio();
         World.createTracker();
     },
@@ -28,7 +30,8 @@ var World = {
     /* LOAD 3D ASSETS */
     /******************/
     createRedArrow: function createRedArrowFn(){
-        var arrowScale = 0.003
+        var arrowScale = 0.001
+        var arrowScale = 0.001
             this.RedArrow = new AR.Model("assets/Arrow-RED-OP.wt3",{
                 scale: {
                     x: arrowScale,
@@ -36,14 +39,14 @@ var World = {
                     z: arrowScale
                 },
               rotate: {
-                 x: 0.0,
-                 y: 90.0,
-                 z: 180
-               },
+                 x: 90.0,
+                 y: 0.0,
+                 z: 270
+              },
              translate: {
-                   x: -1.5,
-                   y: 0.5,
-                   z: 0.7
+                   x: -0.41,
+                   y: 0.969,
+                   z: -0.231
                },
                 enabled: false,
                 onError: World.onError
@@ -51,49 +54,74 @@ var World = {
             World.drawables.push(this.RedArrow);
         },
 
-        createBox: function createBoxFn(){
-            var boxScale = 0.009
-                this.Box = new AR.Model("assets/Box.wt3",{
-                    scale: {
-                        x: boxScale,
-                        y: boxScale,
-                        z: boxScale
-                    },
-                  rotate: {
-                     x: 0,
-                     y: 90.0,
-                     z: 0
-                   },
-                 translate: {
-                       x: -1.4,
-                       y: 2.5,
-                       z: -0.5
-                   },
-                    enabled: true,
-                    onError: World.onError
-                });
-                World.drawables.push(this.Box);
-            },
 
+    createBlackArrow: function createBlackArrowFn(){
+    var arrowScale = 0.0008
+
+        this.BlackArrow = new AR.Model("assets/Arrow-Black.wt3",{
+            scale: {
+                x: arrowScale,
+                y: arrowScale,
+                z: arrowScale
+            },
+            rotate: {
+                x: 90.0,
+                y: 0.0,
+                z: 270
+            },
+            translate: {
+                x: 0.42,
+                y: 0.873,
+                z: -0.5
+            },
+            enabled: false,
+            onError: World.onError
+        });
+        World.drawables.push(this.BlackArrow);
+    },
+
+    createBox: function createBoxFn(){
+        var boxScale = 0.0022
+            this.Box = new AR.Model("assets/Box.wt3",{
+                scale: {
+                    x: boxScale,
+                    y: boxScale,
+                    z: boxScale
+                },
+                rotate: {
+                    x: 270,
+                    y: 0.0,
+                    z: 0
+                },
+                translate: {
+                    x: -0.462,
+                    y: 0.564,
+                    z: -0.249
+                },
+                enabled: true,
+                onError: World.onError
+            });
+            World.drawables.push(this.Box);
+        },
 
     /******************/
     /* CREATE TRACKER */
-    /******************/
-  createTracker: function createTrackerFn() {
-        this.targetCollectionResource = new AR.TargetCollectionResource("assets/toyota_image.wtc", {
+    /******************/ 
+    createTracker: function createTrackerFn() {
+        this.targetCollectionResource = new AR.TargetCollectionResource("assets/toyota_battery_obj.wto", {
             onError: World.onError
         });
 
-          this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
+          this.tracker = new AR.ObjectTracker(this.targetCollectionResource, {
 
                           onError: World.onError
                       });
 
-      this.Toyota = new AR.ImageTrackable(this.tracker, "*", {
+      this.Toyota = new AR.ObjectTrackable(this.tracker, "*", {
                         drawables: {
                             cam: World.drawables
                         },
-                         onImageRecognized: World.hideInfoBar,
+                         onObjectRecognized: World.hideScanBox,
                          onError: World.onError
                      });
 
@@ -103,40 +131,18 @@ var World = {
             viewportWidth: 500,
             viewportHeight: 500,
             opacity:0.8,
-//            onClick: World.toggleSnapping,
             onError: World.onError,
-              onDragBegan: function(xNormalized , yNormalized ) {
+              onDragEnded: function(xNormalized , yNormalized ) {
                     if(yNormalized<0){
                         World.scrollSteps(100);
                     }else{
                         World.scrollSteps(-100);
                     }
               },
-            onScaleEnded: World.toggleSnapping,
-            scale: {
-                x: 12,
-                y: 12,
-                z: 12
-            },
-            translate: {
-                x: 1.5,
-                y: 0,
-                z: 1
-            },
-            rotate: {
-                x:180,
-                y:180,
-                z:180
-            },
-//            horizontalAnchor: AR.CONST.HORIZONTAL_ANCHOR.RIGHT,
-//            verticalAnchor: AR.CONST.VERTICAL_ANCHOR.TOP,
-            allowDocumentLocationChanges: true,
-            clickThroughEnabled: true,
-            mirrored:true,
-            zOrder:99
+            onScaleEnded: World.toggleSnapping,       
         });
 
-        this.objectTrackable2 = new AR.ImageTrackable (this.tracker, "*", {
+        this.objectTrackable2 = new AR.ObjectTrackable (this.tracker, "*", {
             drawables: {
                 cam: World.instructionWidget
             },
@@ -147,7 +153,7 @@ var World = {
             onObjectLost: World.objectLost,
             onError: World.onError
         });
-
+        World.applyLayout(World.instructionsMenu.normal);
     },
     /********************/
     /* CREATE ANIMATION */
@@ -157,8 +163,8 @@ var World = {
      var boxTranslationAnimation1 = new AR.PropertyAnimation(
                 World.Box,
                 "translate.y",
-                2.5,
-                2.5 + 1, animationDuration, {}
+                0.546,
+                 0.8, animationDuration, {}
             );
         var animationGroup = new AR.AnimationGroup(
                     AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [boxTranslationAnimation1]
@@ -169,30 +175,31 @@ var World = {
         //animationGroup.start()
         World.steps.push(animationGroup)
     },
+
     createRedArrowAppearingAnimation: function createRedArrowAppearingAnimationFn(){
         animationDuration = 1500;
-        var sx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0, 0.003, animationDuration, {
+        var sx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0, 0.001, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var sy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0, 0.003, animationDuration, {
+        var sy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0, 0.001, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var sz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0, 0.003, animationDuration, {
+        var sz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0, 0.001, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
 
-        var isx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0.003, 0, animationDuration, {
+        var isx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0.001, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var isy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0.003, 0, animationDuration, {
+        var isy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0.001, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
-        var isz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0.003, 0, animationDuration, {
+        var isz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0.001, 0, animationDuration, {
         type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
@@ -212,6 +219,49 @@ var World = {
         World.steps.push(emptyAnimationGroup);
     },
 
+
+    createBlackArrowAppearingAnimation: function createBlackArrowAppearingAnimation(){
+        animationDuration = 1500;
+        var sx = new AR.PropertyAnimation(World.BlackArrow, "scale.x", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var sy = new AR.PropertyAnimation(World.BlackArrow, "scale.y", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var sz = new AR.PropertyAnimation(World.BlackArrow, "scale.z", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+
+        var isx = new AR.PropertyAnimation(World.BlackArrow, "scale.x", 0.001, 0, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var isy = new AR.PropertyAnimation(World.BlackArrow, "scale.y", 0.001, 0, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var isz = new AR.PropertyAnimation(World.BlackArrow, "scale.z", 0.001, 0, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var blackAppearingAnimationGroup = new AR.AnimationGroup(
+                            AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, [sx,sy,sz]
+                        );
+        var blackDisappearingAnimationGroup = new AR.AnimationGroup(
+                                    AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, [isx,isy,isz]
+                                );
+
+        var emptyAnimationGroup = new AR.AnimationGroup(
+                                    AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, []
+                                );
+
+        World.steps.push(blackAppearingAnimationGroup);
+        World.steps.push(blackDisappearingAnimationGroup);
+        World.steps.push(emptyAnimationGroup);
+    },
     /********************/
     /* CREATE AUDIO */
     /********************/
@@ -225,80 +275,164 @@ var World = {
     /******************/
     /*   UI Elements  */
     /******************/
-    createBtn: function createBtnFn(options) {
-        step=0;
-        var btn = new AR.ImageResource("assets/nextbtn2.png", {
+    createStartBtn: function createStartBtnFn() {
+        var startbtn = new AR.ImageResource("assets/startbtn.png", {
             onError: World.onError
-
         });
-
+        options = {};
+        options.translate =  {
+            x: 0.2,
+            z: 0.5,
+        }
+        options.rotate =  {
+            x: 90.0,
+        }
+        options.opacity = 0.9;
         options.onClick = function () {
-            if(step==1){
+            World.steps[World.step].start();
+            World.audio[World.step].play();
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
+            World.step++;
+            startbtn.destroy();
+            World.nextbtn.enabled = true;
+            World.backbtn.enabled = true;
+        }
+        var startbtn = new AR.ImageDrawable(startbtn, 0.4, options)
+        World.drawables.push(startbtn);
+    },
+    createNextBtn: function createNextBtnFn() {
+        options ={};
+        var btn = new AR.ImageResource("assets/nextbtn.png", {
+            onError: World.onError
+        });
+        options.translate =  {
+            x: 0.2,
+            z: 0.5,
+        }
+        options.rotate =  {
+            x: 90.0,
+        }
+        options.opacity = 0.9;
+        options.enabled = false;
+        options.onClick = function () {
+            if (World.step === 1) {
                 World.RedArrow.enabled = true;
                 World.Box.enabled = false;
-            };
-            World.steps[step].start();
-            World.audio[step].play();
-            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
-            step++;
-            if(step==World.steps.length){
             }
+            
+            if (World.step === 4) {
+                World.BlackArrow.enabled = true;
+            }
+            
+            if (World.step !== 0 && (World.audio[World.step-1].state == 2 || World.audio[World.step-1].state == 3)) {
+                    World.audio[World.step-1].stop();
+            }
+                        
+            scrollFlag = World.step > 6 ? false : true;
+            
+            if (World.step > 2 && scrollFlag) {
+                World.scrollSteps(200);
+            }
+            
+            World.steps[World.step].start();
+            World.audio[World.step].play();
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
+            World.step++;
         }
-        var overlayOne = new AR.ImageDrawable(btn, 0.5, options)
-        World.drawables.push(overlayOne);
+        World.nextbtn = new AR.ImageDrawable(btn, 0.2, options)
+        World.drawables.push(World.nextbtn);
     },
 
-     toggleSnapping: function toggleSnappingFn() {
-            World.snapped = !World.snapped;
-            World.objectTrackable2.snapToScreen.enabled = World.snapped;
-
-            if (World.snapped) {
-                World.applyLayout(World.layout.snapped);
+    createBackBtn: function createBackBtn() {
+        options ={};
+        var backbtn = new AR.ImageResource("assets/backbtn.png", {
+            onError: World.onError
+        });
+        options.opacity = 0.7;
+        options.translate =  {
+            x: -0.45,
+            y: 0,
+            z: 0.5,
+        }
+        options.rotate =  {
+            x: 90.0,
+        }
+        options.enabled = false;
+        options.onClick = function () {
+            if (World.step !== 0 && (World.audio[World.step-1].state == 2 || World.audio[World.step-1].state == 3)) {
+                World.audio[World.step-1].stop();
             }
-            else {
-                World.applyLayout(World.layout.normal);
+            if(World.step>0){
+                World.step--;     
             }
-        },
+            if(World.step<2){
+                World.Box.enabled = true;
+                World.RedArrow.enabled = false;            
+            }
 
-     scrollSteps: function ScrollStepsFn(pixels){
+            if (World.step < 5) {
+                World.BlackArrow.enabled = false;
+            }
+               
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = 'white'; step.style.color= 'black'; console.log(step.style.backgroundColor);");
+        }
+        World.backbtn = new AR.ImageDrawable(backbtn, 0.2, options)
+        World.drawables.push(World.backbtn);
+    },
+
+    toggleSnapping: function toggleSnappingFn() {
+        World.snapped = !World.snapped;
+        World.objectTrackable2.snapToScreen.enabled = World.snapped;
+
+        if (World.snapped) {
+
+            World.applyLayout(World.instructionsMenu.snapped);
+        }
+        else {
+
+            World.applyLayout(World.instructionsMenu.normal);
+        }
+    },
+
+    scrollSteps: function ScrollStepsFn(pixels){
         World.instructionWidget.evalJavaScript("document.getElementById('main').scrollBy(0,"+pixels+");");
-       World.instructionWidget.evalJavaScript("console.log('Scrolled!')");
-     },
+    // World.instructionWidget.evalJavaScript("document.getElementById('main').scrollBy({ top: "+pixels+", behavior: 'smooth' });");
+    },
 
-        applyLayout: function applyLayoutFn(layout) {
-            World.instructionWidget.scale = {
-                x: layout.instructionsScale,
-                y: layout.instructionsScale,
-                z: layout.instructionsScale
-            };
-//            World.instructionWidget.rotate = {
-//            x:90,
-//            y:90,
-//            z:90
-//            }
-            World.instructionWidget.translate = {
-                x: layout.TranslateX,
-                y: 0,
-                z: 0
-            };
-        },
+    applyLayout: function applyLayoutFn(instructionsMenu) {
+        World.instructionWidget.scale = {
+            x: instructionsMenu.instructionsScale,
+            y: instructionsMenu.instructionsScale,
+            z: instructionsMenu.instructionsScale
+        };
+        World.instructionWidget.translate = {
+            x: instructionsMenu.TranslateX,
+            y: 0,
+            z: 0
+        };
+    },
 
-     layout: {
+    hideScanBox: function hideScanBoxFn() {
+        document.getElementById("scanbox").style.display = "none";
+    },
+
+     instructionsMenu: {
              normal: {
                  name: "normal",
                  offsetX: 0,
                  offsetY: 0,
-                 opacity: 1.0,
+                 opacity: 0.9,
                  instructionsScale: 8.5,
-                 TranslateX: 1.5,
-                 TranslateY: 0,
-                 TranslateZ: 1,
+                 TranslateX: -1.5
+                 ,
+                 TranslateY: 1,
+                 TranslateZ: 0.5,
              },
              snapped: {
                  name: "snapped",
                  offsetX: 1.0,
                  offsetY: 0.45,
-                 opacity: 0.5,
+                 opacity: 0.6,
                  instructionsScale: 7.0,
                  TranslateX: -0.7,
                  TranslateY: 0.5,
