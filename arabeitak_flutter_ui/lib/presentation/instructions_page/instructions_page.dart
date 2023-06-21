@@ -29,7 +29,7 @@ class InstructionsPage extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        navigateToPage('/ar/jumpstart_battery');
+                        navigateToPage('/ar/add_coolant');
                       },
                       style: ElevatedButton.styleFrom(
                             side: BorderSide(color:  Theme.of(context).primaryColor),

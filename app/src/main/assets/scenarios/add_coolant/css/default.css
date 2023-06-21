@@ -22,7 +22,15 @@
     text-align: right;
     width: 50%;
 }
-
+.scroll-div{
+     padding:5px;
+     margin:5px;
+     width: 400px;
+     height: 400px;
+     overflow-y: auto;
+     overflow-x: hidden;
+     text-align:justify;
+}
 #infoBox .icons {
     display: table-cell;
     vertical-align: middle;

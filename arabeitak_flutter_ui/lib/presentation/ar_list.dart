@@ -130,7 +130,7 @@ Widget CustomListTile(
     height: MediaQuery.of(context).size.height / 7,
     // padding: EdgeInsets.only(left: MediaQuery.of(context).size.height / 57),
     child: ListTile(
-      onTap: () => navigateToPage("/ar/ar_demo"),
+      onTap: () => navigateToPage("/ar/add_coolant"),
       title: Row(
         //TODO: fix overflow
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,7 +169,7 @@ Widget CustomListTile(
             onPressed: () {
               if (path == null) {
               } else {
-                () => navigateToPage('/ar/ar_demo');
+                () => navigateToPage('/ar/add_coolant');
               }
             },
             child: Icon(
