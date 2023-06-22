@@ -93,19 +93,19 @@ public class MainActivity extends AppCompatActivity  {
     private void navigateToPage(String pageName) {
         Intent intent = new Intent(MainActivity.this, ARWikitudeActivity.class);
         switch (pageName) {
-            case "/ar/add_coolant":
+            case "Add Coolant":
                 intent.putExtra("procedure", "add_coolant");
                 startActivity(intent);
                 break;
-            case "/ar/change_tyre":
+            case "Change Tyre":
                 intent.putExtra("procedure", "change_tyres");
                 startActivity(intent);
                 break;
-            case "/ar/jumpstart_battery":
+            case "Jumpstart a Dead Battery":
                 intent.putExtra("procedure", "jumpstart_battery");
                 startActivity(intent);
                 break;
-            case "/ar/ar_demo":
+            case "AR Demo":
                 Log.d(TAG, "navigateToPage: AR DEMO");
                 intent.putExtra("procedure", "ar_demo");
                 startActivity(intent);

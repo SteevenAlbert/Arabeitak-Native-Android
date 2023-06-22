@@ -34,7 +34,7 @@ class InstructionsPage extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          navigateToPage('/ar/add_coolant');
+                          navigateToPage(procedure.title);
                         },
                         style: ElevatedButton.styleFrom(
                             side: BorderSide(
