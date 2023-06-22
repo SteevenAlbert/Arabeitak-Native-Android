@@ -25,7 +25,7 @@ class ActionCard extends StatelessWidget {
             ? isFlutterPath
                 ? context.push(path)
                 : navigateToPage(path)
-            : context.go('$path/${pathParams!['type']}');
+            : context.push('$path/${pathParams!['type']}');
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

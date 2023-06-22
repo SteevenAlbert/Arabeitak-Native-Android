@@ -1,3 +1,4 @@
+import 'package:arabeitak_flutter_ui/domain/models/testing_procedure.dart';
 import 'package:arabeitak_flutter_ui/presentation/procedures_page/custom_list_tile.dart';
 import 'package:arabeitak_flutter_ui/repositories/procedures.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
@@ -14,7 +15,9 @@ Map<String, List<String>> convertToMap(String e) {
   return mapData;
 }
 
-Map<String, List<Object>>? list;
+Map<String, List<TestingProcedure>> proceduresList = {};
+
+Map<String, List<Object>>? list={};
 Iterable<String>? sections;
 
 class ProceduresList extends StatelessWidget {
@@ -27,11 +30,11 @@ class ProceduresList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == 'maintenance') {
-      list = Procedures.proceduresList;
+      proceduresList = TestingProcedure.maintenanceList;
     } else {
-      list = Procedures.featuresList;
+      proceduresList = TestingProcedure.featuresList;
     }
-    sections = list!.keys;
+    sections = proceduresList.keys;
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -64,38 +67,12 @@ class ProceduresList extends StatelessWidget {
                 ),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: ListView(
+                  child: ListView.builder(
                     shrinkWrap: true,
-                    children: ListTile.divideTiles(context: context, tiles: [
-                      if (list![sections!.elementAt(i)] != null)
-                        for (var e in list![sections!.elementAt(i)]!)
-                          if (e.runtimeType == String)
-                            CustomListTile(
-                              icon: e.toString().replaceAll('/', ''),
-                              text: e.toString(),
-                              path:
-                                  // 'text_${e.toString().toLowerCase().replaceAll('/', '').replaceAll(' ', '_')}',
-                                  // '/preview_text_instructions_page',
-                                  '/instructions_page',
-                            )
-                          else
-                            for (String v
-                                in convertToMap(e.toString()).values.first)
-                              CustomListTile(
-                                icon:
-                                    '${convertToMap(e.toString()).keys.first} $v'
-                                        .replaceAll('/', ''),
-                                text:
-                                    '${convertToMap(e.toString()).keys.first} $v',
-                                path:
-                                    // 'text_${convertToMap(e.toString()).keys.first} $v'
-                                    //     .toLowerCase()
-                                    //     .replaceAll('/', '')
-                                    //     .replaceAll(' ', '_'),
-                                    // '/preview_text_instructions_page',
-                                    '/instructions_page',
-                              )
-                    ]).toList(),
+                    itemCount: proceduresList[sections!.elementAt(i)]!.length,
+                    itemBuilder: (context, index) {
+                      return CustomListTile(procedure: proceduresList[sections!.elementAt(i)]![index]);
+                    },
                   ),
                 ),
               ),
