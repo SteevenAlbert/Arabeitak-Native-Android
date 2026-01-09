@@ -1,222 +1,203 @@
 var World = {
+    //Initial Variables
     loaded: false,
     drawables: [],
     lights: [],
     steps:[],
-    firetruckRotation: {
-        x: 0,
-        y: 0,
-        z: 0
-    },
-    firetruckCenter: {
-        x: 0,
-        y: -0.14,
-        z: 0
-    },
-    firetruckLength: 0.33,
-    firetruckHeight: 0.2,
+    audio:[],
     snapped: false,
     interactionContainer: 'snapContainer',
-    layout: {
-        normal: {
-            name: "normal",
-            offsetX: 0.35,
-            offsetY: 0.45,
-            opacity: 1.0,
-            carScale: 2.5,
-            carTranslateX: -0.3,
-            carTranslateY: 0.5,
-            carTranslateZ: 0.2,
-        },
-        snapped: {
-            name: "snapped",
-            offsetX: 0.45,
-            offsetY: 0.45,
-            opacity: 0.2,
-            carScale: 5,
-            carTranslateX: -0.89,
-            carTranslateY: 0,
-            carTranslateZ: 0,
-        }
-    },
-    previousScaleValue: 0,
-
-    previousTranslateValueSnap: {
-        x: 0,
-        y: 0
-    },
     defaultScale: 0,
-    init: function initFn() {
-
-        World.createOccluder();
-        World.createCap();
+    step: 0,
+    nextbtn: null,
+    backbtn: null,
+    startFlag: false,
+    init: function initFn(){
+        World.createAntiClockArrows();
+        World.createClockWiseArrows();
+        World.createFunnel();
         World.createJerrycan();
-        World.createBtn({
-            translate: {
-                x: 0,
-                z: 0.5,
-
-            }
-        });
-        World.createOpenCapAnimation();
+        World.createFunnelOccluder();
+        World.createRedArrow();
+        World.createRedArrowAppearingAnimation();
+        World.createFunnelAnimation();
         World.createPouringAnimation();
-        World.createStopPouringAnimation();
-        World.createCloseCapAnimation();
+        World.createStartBtn();
+        World.createNextBtn();
+        World.createBackBtn();
+        World.createAudio();
         World.createTracker();
-
     },
 
-    createOccluder: function createOccluderFn() {
-        var occluderScale = 0.0065 * this.firetruckLength;
+    /******************/
+    /* LOAD 3D ASSETS */
+    /******************/
+    createRedArrow: function createRedArrowFn(){
+        var arrowScale = 0.0008
+            this.RedArrow = new AR.Model("assets/Arrow-RED-OP.wt3",{
+                scale: {
+                    x: arrowScale,
+                    y: arrowScale,
+                    z: arrowScale
+                },
+              rotate: {
+                 x: 0.0,
+                 y: 0.0,
+                 z: 270
+              },
+             translate: {
+                   x: -0.347,
+                   y: 0.755,
+                   z: -0.098
+               },
+                enabled: false,
+                onError: World.onError
+            });
+            World.drawables.push(this.RedArrow);
+        },
 
-        this.firetruckOccluder = new AR.Occluder("assets/firetruck_occluder.wt3", {
-            onLoaded: World.showInfoBar,
-            scale: {
-                x: occluderScale,
-                y: occluderScale,
-                z: occluderScale
+    createAntiClockArrows: function createAntiClockArrowsFn(){
+        var ArrowsImage = new AR.ImageResource("assets/arrows.png")
+        this.ArrowsImageDrawable = new AR.ImageDrawable(ArrowsImage, 0.5, {
+            translate: {
+                x: -0.338,
+                y: 0.416,
+                z: -0.099
             },
-            translate: this.firetruckCenter,
-            rotate: {
-                x: 180
+            rotate:{
+                x: 90,
+                y: 90
             },
-            onError: World.onError
+            enabled: false,
         });
-
-        World.drawables.push(this.firetruckOccluder);
+        World.drawables.push(this.ArrowsImageDrawable);
     },
 
-    createCap: function createCapFn() {
-        this.cap = World.getCap();
-        World.drawables.push(this.cap);
+
+    createClockWiseArrows: function createClockWiseArrowsFn(){
+        var ArrowsImage = new AR.ImageResource("assets/clockwiseArrows.png")
+        this.ClockWiseArrowsImageDrawable = new AR.ImageDrawable(ArrowsImage, 0.5, {
+            translate: {
+                x: -0.338,
+                y: 0.416,
+                z: -0.099
+            },
+            rotate:{
+                x: 90,
+                y: 90
+            },
+            enabled: false,
+        });
+        World.drawables.push(this.ClockWiseArrowsImageDrawable);
     },
 
-    getCap: function getCapFn() {
-        var capScale = 0.003 * this.firetruckLength;
-        return new AR.Model("assets/cap.wt3", {
+    createFunnel: function createFunnelFn(){
+    var funnelScale = 0.003
+        this.Funnel = new AR.Model("assets/Funnel.wt3",{
             scale: {
-                x: capScale,
-                y: capScale,
-                z: capScale
+                x: funnelScale,
+                y: funnelScale,
+                z: funnelScale
+            },
+            rotate: {
+                x: 270,
+                y: 0,
+                z: 0
             },
             translate: {
-                x: -this.firetruckLength * 0.8,
-                y: 0,
-                z: 0.2
+                x: -0.337,
+                y: 0.477,
+                z: -0.125
             },
-            rotate: {
-                x: -90
-            },
-            onError: World.onError,
-
-        });
-    },
-
-    createJerrycan: function createJerrycanFn() {
-        this.jerrycan = World.getJerrycan();
-        World.drawables.push(this.jerrycan);
-    },
-
-    getJerrycan: function getJerrycanFn() {
-        var jerrycanScale = 1.0 * this.firetruckLength;
-        return new AR.Model("assets/jerrycan.wt3", {
-            scale: {
-                x: jerrycanScale,
-                y: jerrycanScale,
-                z: jerrycanScale
-            },
-            translate: {
-                x: this.firetruckLength * 0.3,
-                y: 0,
-                z: 0.2
-            },
-            rotate: {
-                x: -90
-            },
-            onClick: function (scale) {
-                // World.runMainAnimation();
-
-            },
+            enabled: false,
             onError: World.onError
         });
+        World.drawables.push(this.Funnel);
     },
 
-    createOpenCapAnimation: function createOpenCapAnimationFn() {
-        var animationDuration = 2000;
-
-        //var capRotationAnimationY = new AR.PropertyAnimation(this.cap, "rotate.y", 0, 360, animationDuration);
-        var capRotationAnimationX = new AR.PropertyAnimation(this.cap, "rotate.x", -90, -180, animationDuration);
-        // capRotationAnimationX.start();
-        World.steps.push(capRotationAnimationX);
+    createFunnelOccluder: function createFunnelOccluderFn(){
+        var funnelScale = 0.0009
+        this.FunnelOccluder = new AR.Occluder("assets/FunnelOccluder.wt3", {
+            translate: {
+                x: -0.339,
+                y: 0.43,
+                z: -0.103
+            },
+            scale: {
+                x: funnelScale,
+                y: funnelScale +0.001,
+                z: funnelScale
+            },
+            rotate: {
+                z: 270
+            },
+            enabled:false,
+        });
+        World.drawables.push(this.FunnelOccluder);
     },
 
-    createPouringAnimation: function createPouringAnimationFn() {
-        var animationDuration = 2000;
-        var jerrycanRotationAnimationDown = new AR.PropertyAnimation(this.jerrycan, "rotate.z", 0, 45, animationDuration);
+    createJerrycan: function createJerrycanFn(){
+        var jerrycanScale = 0.6
+            this.Jerrycan = new AR.Model("assets/jerrycan2.wt3",{
+                scale: {
+                    x: jerrycanScale,
+                    y: jerrycanScale,
+                    z: jerrycanScale
+                },
+                rotate: {
+                    x: 0,
+                    y: 90,
+                    z: 90
+                },
+                translate: {
+                    x: -0.33,
+                    y: 0.753,
+                    z: -0.664
+                },
+                enabled: false,
+                onError: World.onError
+            });
+            World.drawables.push(this.Jerrycan);
+        },
 
-        // jerrycanRotationAnimationDown.start();
-        World.steps.push(jerrycanRotationAnimationDown);
-    },
-
-    createStopPouringAnimation: function createStopPouringAnimationFn() {
-        var animationDuration = 2000;
-
-        var jerrycanRotationAnimationUp = new AR.PropertyAnimation(this.jerrycan, "rotate.z", 45, 0, animationDuration);
-
-        World.steps.push(jerrycanRotationAnimationUp);
-    },
-
-    createCloseCapAnimation: function createCloseCapAnimationFn() {
-        var animationDuration = 2000;
-
-        var capRotationAnimationX = new AR.PropertyAnimation(this.cap, "rotate.x", -180, -90, animationDuration);
-
-        World.steps.push(capRotationAnimationX);
-    },
-
+    /******************/
+    /* CREATE TRACKER */
+    /******************/ 
     createTracker: function createTrackerFn() {
-        this.targetCollectionResource = new AR.TargetCollectionResource("assets/firetruck.wto", {
+        this.targetCollectionResource = new AR.TargetCollectionResource("assets/reservoir.wto", {
             onError: World.onError
         });
 
-        this.tracker = new AR.ObjectTracker(this.targetCollectionResource, {
-            onError: World.onError
-        });
+          this.tracker = new AR.ObjectTracker(this.targetCollectionResource, {
+                          onError: World.onError
+                      });
 
-        this.objectTrackable = new AR.ObjectTrackable(this.tracker, "*", {
-            drawables: {
-                cam: World.drawables
-            },
-            onObjectRecognized: World.objectRecognized,
-            onObjectLost: World.objectLost,
-            onError: World.onError
-        });
+      this.Toyota = new AR.ObjectTrackable(this.tracker, "*", {
+                        drawables: {
+                            cam: World.drawables
+                        },
+                         onObjectRecognized: World.hideScanBox,
+                         onError: World.onError
+                     });
+
         World.instructionWidget = new AR.HtmlDrawable({
             uri: "assets/instruction.html"
-        }, 0.25, {
+        },0.25, {
             viewportWidth: 500,
-            viewportHeight: 700,
-            onClick: World.toggleSnapping,
+            viewportHeight: 500,
+            opacity:0.8,
             onError: World.onError,
-            scale: {
-                x: 2.5,
-                y: 2.5,
-                z: 2.5
-            },
-            translate: {
-                x: -this.firetruckLength * 0.9,
-                y: this.firetruckHeight * 2.5,
-                z: 0.2
-            },
-            rotate: {
-                x: -0.6
-            },
-            horizontalAnchor: AR.CONST.HORIZONTAL_ANCHOR.RIGHT,
-            verticalAnchor: AR.CONST.VERTICAL_ANCHOR.TOP,
-            // allowDocumentLocationChanges: true
+              onDragEnded: function(xNormalized , yNormalized ) {
+                    if(yNormalized<0){
+                        World.scrollSteps(100);
+                    }else{
+                        World.scrollSteps(-100);
+                    }
+              },
+            onScaleEnded: World.toggleSnapping,       
         });
 
-        this.objectTrackable2 = new AR.ObjectTrackable(this.tracker, "*", {
+        this.objectTrackable2 = new AR.ObjectTrackable (this.tracker, "*", {
             drawables: {
                 cam: World.instructionWidget
             },
@@ -227,97 +208,320 @@ var World = {
             onObjectLost: World.objectLost,
             onError: World.onError
         });
-
+        World.applyLayout(World.instructionsMenu.normal);
     },
-
-
-    createBtn: function createBtnFn(options) {
-        step=0;
-        var btn = new AR.ImageResource("assets/nextbtn2.png", {
-            onError: World.onError
+    /********************/
+    /* CREATE ANIMATION */
+    /********************/
+    createRedArrowAppearingAnimation: function createRedArrowAppearingAnimationFn(){
+        animationDuration = 1500;
+        var sx = new AR.PropertyAnimation(World.RedArrow, "scale.x", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
         });
 
+        var sy = new AR.PropertyAnimation(World.RedArrow, "scale.y", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var sz = new AR.PropertyAnimation(World.RedArrow, "scale.z", 0, 0.001, animationDuration, {
+        type: AR.CONST.EASING_CURVE_TYPE.EASE_OUT_QUAD
+        });
+
+        var appearingAnimationGroup = new AR.AnimationGroup(
+                            AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, [sx,sy,sz]
+                        );
+
+
+        var emptyAnimationGroup = new AR.AnimationGroup(
+                            AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, []
+                        );
+        World.steps.push(emptyAnimationGroup);
+        World.steps.push(appearingAnimationGroup);
+    },
+
+
+    createFunnelAnimation: function createFunnelAnimationFn() {
+        animationDuration=2000
+        var funnelTranslationAnimation1 = new AR.PropertyAnimation(
+                World.Funnel,
+                "translate.y",
+                0.8,
+                0.477, animationDuration, {}
+            );
+        var animationGroup = new AR.AnimationGroup(
+                    AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [funnelTranslationAnimation1]
+                );
+        var emptyAnimationGroup = new AR.AnimationGroup(
+                            AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, []
+                        );
+
+
+        //animationGroup.start()
+        World.steps.push(animationGroup)
+
+
+    },
+
+      createPouringAnimation: function createPouringAnimationFn() {
+            var animationDuration = 2500;
+            var jerrycanRotationAnimationDown = new AR.PropertyAnimation(this.Jerrycan, "rotate.y", 90, 30, animationDuration);
+            var jerrycanRotationAnimationUp = new AR.PropertyAnimation(this.Jerrycan, "rotate.y", 30, 90, animationDuration);
+
+                    var emptyAnimationGroup = new AR.AnimationGroup(
+                                        AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, []
+                                    );
+             var animationGroup = new AR.AnimationGroup(
+                                AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [jerrycanRotationAnimationDown, jerrycanRotationAnimationUp]
+                            );
+            World.steps.push(animationGroup);
+            World.createRedArrowAppearingAnimation();
+            World.steps.push(emptyAnimationGroup);
+            World.steps.push(emptyAnimationGroup);
+            World.steps.push(emptyAnimationGroup);
+            World.steps.push(emptyAnimationGroup);
+        },
+
+
+
+    /********************/
+    /* CREATE AUDIO */
+    /********************/
+    createAudio: function createAudioFunction(){
+        for (var i = 1; i <= 8; i++) {
+            var stepVO = new AR.Sound("assets/audio/Step-" + i + ".mp3");
+            World.audio.push(stepVO);
+        }
+    },
+
+    /******************/
+    /*   UI Elements  */
+    /******************/
+    createStartBtn: function createStartBtnFn() {
+        var startbtn = new AR.ImageResource("assets/startbtn.png", {
+            onError: World.onError
+        });
+        options = {};
+        options.translate =  {
+            x: 0.154,
+            y: 0.494,
+            z: -0.2
+        }
+        options.rotate =  {
+            x: 90.0,
+            y: -90,
+            z: 0
+        }
+        options.opacity = 0.9;
         options.onClick = function () {
-            World.steps[step].start();
-            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
-            step++;
-            if(step==World.steps.length){
+            World.steps[World.step].start();
+            World.audio[World.step].play();
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
+            World.step++;
+            startbtn.destroy();
+            World.nextbtn.enabled = true;
+            World.backbtn.enabled = true;
+        }
+        var startbtn = new AR.ImageDrawable(startbtn, 0.2, options)
+        World.drawables.push(startbtn);
+    },
+    createNextBtn: function createNextBtnFn() {
+        options ={};
+        var btn = new AR.ImageResource("assets/nextbtn.png", {
+            onError: World.onError
+        });
+        options.translate =  {
+           x: 0.25,
+           y: 0.513,
+           z: -0.6
 
-
+        }
+        options.rotate =  {
+            x: 90.0,
+           y: -90,
+           z: 0
+        }
+        options.opacity = 0.9;
+        options.enabled = false;
+        options.onClick = function () {
+            if (World.step === 1) {
+                World.RedArrow.enabled = true;
+                World.ArrowsImageDrawable.enabled = true;
+            }else{
+              World.RedArrow.enabled = false;
+                            World.ArrowsImageDrawable.enabled = false;
             }
+
+            if(World.step >1 && World.step <=3 ){
+                World.Funnel.enabled = true;
+                World.FunnelOccluder.enabled = true;
+            }else{
+                World.Funnel.enabled = false;
+                World.FunnelOccluder.enabled = false;
+            }
+
+             if(World.step == 3 ){
+                    World.Jerrycan.enabled = true;
+               }else{
+                    World.Jerrycan.enabled = false;
+               }
+
+               if(World.step == 4 ){
+                   World.ClockWiseArrowsImageDrawable.enabled = true;
+                    World.RedArrow.enabled = true;
+              }else{
+                   World.ClockWiseArrowsImageDrawable.enabled = false;
+                    World.RedArrow.enabled = false;
+               }
+
+            if (World.step !== 0 && (World.audio[World.step-1].state == 2 || World.audio[World.step-1].state == 3)) {
+                    World.audio[World.step-1].stop();
+            }
+
+
+            scrollFlag = World.step > 6 ? false : true;
+            
+            if (World.step > 2 && scrollFlag) {
+                World.scrollSteps(200);
+            }
+            
+            World.steps[World.step].start();
+            World.audio[World.step].play();
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = '#90EE90'; step.style.color= 'white'; console.log(step.style.backgroundColor);");
+            World.step++;
         }
-        var overlayOne = new AR.ImageDrawable(btn, 0.1, options)
-
-        World.drawables.push(overlayOne);
+        World.nextbtn = new AR.ImageDrawable(btn, 0.15, options)
+        World.drawables.push(World.nextbtn);
     },
 
-    objectRecognized: function objectRecognizedFn() {
-        World.hideInfoBar();
-        World.setAugmentationsEnabled(true);
-    },
-
-    objectLost: function objectLostFn() {
-        World.setAugmentationsEnabled(false);
-    },
-
-    setAugmentationsEnabled: function setAugmentationsEnabledFn(enabled) {
-        for (var i = 0; i < World.drawables.length; i++) {
-            World.drawables[i].enabled = enabled;
+    createBackBtn: function createBackBtn() {
+        options ={};
+        var backbtn = new AR.ImageResource("assets/backbtn.png", {
+            onError: World.onError
+        });
+        options.opacity = 0.7;
+        options.translate =  {
+            x: 0.25,
+            y: 0.513,
+            z: 0.025,
         }
+        options.rotate =  {
+             x: 90.0,
+                       y: -90,
+                       z: 0
+        }
+        options.enabled = false;
+        options.onClick = function () {
+            if (World.step !== 0 && (World.audio[World.step-1].state == 2 || World.audio[World.step-1].state == 3)) {
+                World.audio[World.step-1].stop();
+            }
+            if(World.step>0){
+                World.step--;     
+            }
+          if (World.step === 1) {
+                   World.RedArrow.enabled = true;
+                   World.ArrowsImageDrawable.enabled = true;
+           }else{
+             World.RedArrow.enabled = false;
+                           World.ArrowsImageDrawable.enabled = false;
+           }
+             if(World.step == 3 ){
+                    World.Jerrycan.enabled = true;
+               }else{
+                    World.Jerrycan.enabled = false;
+               }
+
+             if(World.step==2){
+                World.Funnel.enabled = true;
+                World.FunnelOccluder.enabled = true;
+            }else{
+                World.Funnel.enabled = false;
+                World.FunnelOccluder.enabled = false;
+            }
+
+            if(World.step == 4 ){
+                   World.ClockWiseArrowsImageDrawable.enabled = true;
+              }else{
+                   World.ClockWiseArrowsImageDrawable.enabled = false;
+              }
+           if(World.step >1 && World.step <=4 ){
+                        World.Funnel.enabled = true;
+                        World.FunnelOccluder.enabled = true;
+            }else{
+                World.Funnel.enabled = false;
+                World.FunnelOccluder.enabled = false;
+            }
+
+            World.instructionWidget.evalJavaScript("var step = document.getElementById('step"+World.step+"'); step.style.backgroundColor = 'white'; step.style.color= 'black'; console.log(step.style.backgroundColor);");
+        }
+        World.backbtn = new AR.ImageDrawable(backbtn, 0.15, options)
+        World.drawables.push(World.backbtn);
     },
 
     toggleSnapping: function toggleSnappingFn() {
-
         World.snapped = !World.snapped;
         World.objectTrackable2.snapToScreen.enabled = World.snapped;
 
         if (World.snapped) {
-            World.applyLayout(World.layout.snapped);
 
+            World.applyLayout(World.instructionsMenu.snapped);
         }
         else {
-            World.applyLayout(World.layout.normal);
+
+            World.applyLayout(World.instructionsMenu.normal);
         }
     },
-    applyLayout: function applyLayoutFn(layout) {
 
+    scrollSteps: function ScrollStepsFn(pixels){
+        World.instructionWidget.evalJavaScript("document.getElementById('main').scrollBy(0,"+pixels+");");
+    // World.instructionWidget.evalJavaScript("document.getElementById('main').scrollBy({ top: "+pixels+", behavior: 'smooth' });");
+    },
 
+    applyLayout: function applyLayoutFn(instructionsMenu) {
         World.instructionWidget.scale = {
-            x: layout.carScale,
-            y: layout.carScale,
-            z: layout.carScale
+            x: instructionsMenu.instructionsScale,
+            y: instructionsMenu.instructionsScale,
+            z: instructionsMenu.instructionsScale
         };
-
-        World.defaultScale = layout.carScale;
-
         World.instructionWidget.translate = {
-            x: layout.carTranslateX,
-            y: layout.carTranslateY,
-            z: layout.carTranslateZ
+            x: instructionsMenu.TranslateX,
+            y: 0,
+            z: 0
         };
-        if (layout.name == "normal") {
-            World.instructionWidget.translate = {
-                x: layout.carTranslateX,
-                y: layout.carTranslateY,
-                z: layout.carTranslateZ
-            };
-            World.instructionWidget.rotate = {
-                z: layout.rotateZ
-            };
+        World.instructionWidget.rotate ={
+            x: instructionsMenu.RotateX,
+            y: instructionsMenu.RotateY,
+            z: instructionsMenu.RotateZ,
         }
     },
-    onError: function onErrorFn(error) {
-        alert(error);
+
+    hideScanBox: function hideScanBoxFn() {
+        document.getElementById("scanbox").style.display = "none";
     },
 
-    hideInfoBar: function hideInfoBarFn() {
-        document.getElementById("infoBox").style.display = "none";
-    },
-
-    showInfoBar: function worldLoadedFn() {
-        document.getElementById("infoBox").style.display = "table";
-        document.getElementById("loadingMessage").style.display = "none";
-    }
+     instructionsMenu: {
+             normal: {
+                 name: "normal",
+                 opacity: 0.9,
+                 instructionsScale: 8.5,
+                 TranslateX: -2.5,
+                 TranslateY: 1,
+                 TranslateZ: 0.5,
+                 RotateX: 0,
+                 RotateY: -90,
+                 RotateZ: 0
+             },
+             snapped: {
+                 name: "snapped",
+                 opacity: 0.6,
+                 instructionsScale: 7.0,
+                 TranslateX: -0.7,
+                 TranslateY: 0.5,
+                 TranslateZ: 0,
+                 RotateX: 0,
+                 RotateY: 0,
+                 RotateZ: 0
+             }
+         },
 };
 
 World.init();

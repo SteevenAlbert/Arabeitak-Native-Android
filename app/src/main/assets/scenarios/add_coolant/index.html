@@ -14,19 +14,131 @@
     <!-- <script type="text/javascript" src="ade.js"></script> -->
 
     <link rel="stylesheet" href="css/default.css">
+
+    <style>
+         .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        .popup-buttons {
+            margin-top: 20px;
+        }
+        
+        .popup-buttons button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    .scanbox {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        border: 350px solid rgba(56, 56, 56, 0.831); /* Sets the border style */
+        background-color: transparent; /* Makes the background transparent */
+        display: none;
+    }
+    .scanbox-text {
+        position: absolute;
+        top: -15%; /* Adjust the top position to position the text vertically */
+        left: 50%; /* Adjust the left position to center the text horizontally */
+        transform: translateX(-50%); /* Center the text horizontally */
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Styling for the pill shape */
+    .scanbox-text span {
+        display: inline-block;
+        padding: 5px 5; /* Adjust the padding to control the pill size */
+        border-radius: 15px; /* Adjust the border-radius to control the pill shape */
+        background-color: rgba(255, 255, 255, 0.628); /* Adjust the background color of the pill */
+        color: black; /* Adjust the text color */
+        font-size: 32px; /* Adjust the font size */
+        text-align: center;
+    }
+
+    </style>
 </head>
 
 <body>
-    <div id="infoBox" class="info">
-        <div class="text">Scan Firetruck:</div>
-        <div class="icons">
-            <img src='assets/firetruck_image.png' />
+  
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <h2>Procedure Disclaimer</h2>
+            <p>Please read the following disclaimer before proceeding:</p>
+            
+            <p><b style="color: #dc3545;">Caution: Severe Burns Hazard!</b></p>
+            <p><b>Do not unscrew the reservoir cap while hot</b></p>
+            <p>This procedure carries potential risks and complications. Unscrewing a hot reservoir cap poses a substantial risk due to the high temperatures and pressure contained within the system.</p>
+            
+            <div class="checkbox-wrapper">
+                <label for="acceptCheckbox">
+                    <input type="checkbox" id="acceptCheckbox" onchange="toggleAgreeButton(this)">
+                    I have read the disclaimer
+                </label>
+            </div>
+            
+            <div class="popup-buttons">
+                <button id="agreeButton" onclick="acceptProcedure()" style="background-color:rgb(183, 183, 183); color: rgb(148, 148, 148);" disabled>Agree</button>
+            </div>
         </div>
     </div>
-<!--    <div id="loadingMessage" class="info">Loading ...</div>-->
-<!--    <button id="next" style="z-index: 2;">Next</button>-->
+    <div class="scanbox" id="scanbox">
+        <div class="scanbox-text" id="scanbox-text">
+            <span>Place the <b>reservoir</b> (left of the engine) inside the <b>rectangle</b> below to <b>start</b> the procedure.</span>
+        </div>  
+    </div>
+
     <div id="snapContainer"></div>
 
+    <script>
+        function toggleAgreeButton(checkbox) {
+            var agreeButton = document.getElementById('agreeButton');
+            agreeButton.disabled = !checkbox.checked;
+            if(!agreeButton.disabled){
+                agreeButton.style = "background-color: #4caf50; color: #fff;";
+           
+            }else{
+                agreeButton.style = "background-color: rgb(183, 183, 183); color: rgb(148, 148, 148);";             
+            }
+        }
+
+        function showScanBox(){
+            var scanbox = document.getElementById('scanbox');
+            scanbox.style.display = 'initial';
+        }
+
+        function acceptProcedure() {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'none';
+            showScanBox();
+        }
+    </script>
     <script src="js/assembleanimation.js"></script>
 </body>
 

@@ -89,4 +89,4 @@ class TestingCar {
     TestingCar(model: "Sunny 2022", manufacturer: "Nissan", imagePath: "sunny.png"),
   ];
 
- }
+}

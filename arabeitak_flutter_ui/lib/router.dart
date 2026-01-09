@@ -1,4 +1,5 @@
 import 'package:arabeitak_flutter_ui/domain/models/testing_car.dart';
+import 'package:arabeitak_flutter_ui/domain/models/testing_procedure.dart';
 import 'package:arabeitak_flutter_ui/presentation/all_cars_page/all_cars_page.dart';
 import 'package:arabeitak_flutter_ui/presentation/ar_list.dart';
 import 'package:arabeitak_flutter_ui/presentation/chat.dart';
@@ -53,7 +54,7 @@ class MyRouter {
           GoRoute(
             path: 'instructions_page',
             builder: (BuildContext context, GoRouterState state) {
-              return const InstructionsPage();
+              return InstructionsPage(procedure: state.extra as TestingProcedure);
             },
           ),
           GoRoute(

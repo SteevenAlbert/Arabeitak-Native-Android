@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Procedure Disclaimer</title>
+    <style>
+        /* Styles for the pop-up */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        .popup-buttons {
+            margin-top: 20px;
+        }
+        
+        .popup-buttons button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup">
+        <div class="popup-content">
+            <h2>Procedure Disclaimer</h2>
+            <p>Please read and accept the following disclaimer before proceeding:</p>
+            <p>This procedure carries potential risks and complications. It is important to consult with a professional before attempting it. By proceeding, you acknowledge that you have understood and accepted the risks involved.</p>
+            <div class="popup-buttons">
+                <button onclick="acceptProcedure()">Accept</button>
+                <button onclick="cancelProcedure()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle pop-up actions -->
+    <script>
+        function acceptProcedure() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        function cancelProcedure() {
+           
+        }
+    </script>
+</body>
+</html>
